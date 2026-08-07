@@ -33,6 +33,24 @@ html, body {
   pointer-events: none;
 }
 
+/* Faint oversized arcs — the quiet background motif that keeps a slide from being
+   a bare rectangle of type. Stroke colour comes from --arc; nothing else changes. */
+.arcs {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.arcs i {
+  position: absolute;
+  border: 2px solid var(--arc);
+  border-radius: 50%;
+}
+.arcs i:nth-child(1) { width: 1240px; height: 1240px; top: -420px; right: -360px; }
+.arcs i:nth-child(2) { width: 980px;  height: 980px;  bottom: -330px; left: -290px; }
+.arcs i:nth-child(3) { width: 1560px; height: 1560px; top: 210px; left: -620px; }
+
 .head, .body, .foot { position: relative; z-index: 1; }
 
 /* ---------- header ---------- */
@@ -92,26 +110,30 @@ html, body {
   letter-spacing: -0.025em;
   max-width: 900px;
 }
-/* Taken out of the flow so the hook keeps the same vertical centre it has on every
-   other slide — the cue sits near the bottom instead of pushing the hook upward. */
-.cover-cue {
-  position: absolute;
-  bottom: 44px;          /* clears the footer line */
-  left: 50%;
-  transform: translateX(-50%);
-}
+/* Hand-drawn curved arrow pointing at the hook. Out of the flow, so it cannot push
+   the hook off the vertical centre every other slide shares. */
+/* Anchored to the top of the body, not to the centre: the hook is 2-3 lines
+   depending on the copy, and anchoring to the centre made it collide. */
 .cover-arrow {
+  position: absolute;
+  top: 8px;
+  right: 24px;
   color: var(--hl);
   line-height: 0;
 }
-.cover-swipe {
-  margin-top: 22px;
-  font-size: 28px;
+
+/* Swipe cue: small, letterspaced, in the footer corner — not a centred graphic. */
+.swipe-corner {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 24px;
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--muted);
 }
+.swipe-corner svg { display: block; }
 
 /* stat */
 .body.stat { gap: 8px; align-items: center; }

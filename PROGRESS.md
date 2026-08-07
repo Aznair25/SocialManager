@@ -56,6 +56,27 @@
 
 ## Log
 
+### 2026-08-07 — Session 3f: visual elements from owner references
+**Done:** Owner supplied six Instagram screenshots in `visual_elements/` showing what "add visual
+elements, not just text" meant. Three separate asks, all implemented:
+1. **Background motif** (refs: waving lines, faint watermark arcs) — three oversized thin circles
+   bleeding off every slide edge at a new `--arc` token (`arcOnDark` 0.055 / `arcOnLight` 0.045 in
+   `tokens.json`). Drawn with CSS borders, so the colour is a token and nothing is fetched at render
+   time. Same positions on all five templates, so the deck still reads as one visual template.
+2. **Curved pointer arrow** (refs: hand-drawn arrows pointing at the frames) — replaced the centred
+   circled arrow on the cover with a drawn curve in `--hl` pointing in at the hook.
+3. **Minimal corner swipe cue** (ref: "SWIPE TO READ ⟶" bottom-right) — replaced the centred
+   `SWIPE` label; on the cover it takes the slide index's place in the footer.
+Two geometry bugs found by rendering and zooming rather than assuming: the arrow anchored to the
+body's centre collided with the hook (hooks run 2–3 lines, so it is now anchored to the top of
+`.body`), and the first arrowhead read as a kink because its wings sat collinear with the curve —
+recomputed to splay ±28° about the exit tangent.
+Verified on both palettes and across all three archetypes. All 13 decks re-rendered: 108 slides,
+all 1080×1350.
+**Next:** Owner review of the new cover treatment. `visual_elements/` is still untracked — decide
+whether the references belong in the repo.
+**Blockers:** None.
+
 ### 2026-08-07 — Session 3e: marketing frameworks ported into the generator
 **Done:** Owner linked the `marketing-plan` skill from coreyhaines31/marketingskills. That one is
 about 12-month AARRR plans and is not applicable; the useful material was

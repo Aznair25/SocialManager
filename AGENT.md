@@ -54,6 +54,8 @@ Design language: generous negative space, giant light-weight numerals with small
 
 **Slide content is horizontally centred** (owner decision, 2026-08-07). Body copy, chips, numerals, dividers and CTA blocks all centre left-to-right; only the header (logotype / tag chip) and footer (handle / index) stay edge-aligned. A deck reads as a sequence of single focused statements, not as left-aligned page copy.
 
+**Every slide carries a background arc motif** (owner reference, 2026-08-07): three oversized thin circles (`.arcs > i`) bleeding off the edges at `--arc` opacity — `rgba(255,255,255,0.055)` on dark, `rgba(10,10,10,0.045)` on light. It is a watermark, not a graphic: if you can read it as circles at full size it is too strong. Same three positions on every slide so the deck reads as one template. Drawn with CSS borders rather than an image, so the colour stays a token and nothing is fetched at render time.
+
 Vertical placement is unchanged and must stay that way: `.body` has always used `justify-content: center`, so content sits in the optical middle between header and footer. In a column flexbox `align-items` is the horizontal axis and `justify-content` the vertical one — don't confuse them when editing `base.css`. The cover's arrow cue is absolutely positioned precisely so it cannot push the hook off that vertical centre.
 
 ## Repo map
@@ -149,7 +151,8 @@ Most viewers read slide 1 and nothing else, so it is written and designed differ
 - **Fewest words in the deck.** 3–8 words, aim under 45 characters; **55 is a hard validator failure** (was 70 until 2026-08-07). Fewer words, larger type.
 - **A hook, never a label.** It must never restate the topic, the deck's subject, or a source article's headline — that is the single most common failure. `Agentic AI: orchestrating operations` is a title; `Your AI pilot is a cul-de-sac` is a hook.
 - It must land one of: a claim the reader will argue with, the expensive mistake they are probably making, a number that stops them, or a tension between what they believe and what is true. Banned openings are listed in `ENGAGEMENT` in `src/generate.py`.
-- **A visual element, not just type.** The cover carries a large circled arrow in `--hl` plus a small `swipe` label, centred under the hook. This replaced the old footer swipe pill. The arrow is inline SVG using `currentColor`, so it stays token-driven.
+- **A visual element, not just type.** The cover carries a hand-drawn-style **curved arrow** in `--hl`, anchored to the top-right of the body and pointing in at the hook (owner reference, 2026-08-07). Inline SVG using `currentColor`, so it stays token-driven. Anchor it to the top of `.body`, never the centre — the hook is 2–3 lines depending on copy, and centre-anchoring makes it collide. The arrowhead wings must splay ±28° about the curve's exit tangent; collinear wings read as a kink, not an arrow.
+- **The swipe cue is small and in the corner** — `swipe to read →` in the footer, letterspaced and muted, replacing the slide index on the cover only. Not a centred graphic.
 
 Content slides are reframed for a scrolling reader too: titles are claims rather than labels, bodies address the reader as "you", name the cost of getting it wrong, and end somewhere that earns the next swipe. This is enforced by the `ENGAGEMENT` block in the system prompt — edit it there, not per-deck.
 

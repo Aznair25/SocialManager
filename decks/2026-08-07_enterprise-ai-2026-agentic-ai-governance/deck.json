@@ -1,0 +1,74 @@
+{
+  "id": "2026-08-07_enterprise-ai-2026-agentic-ai-governance",
+  "archetype": "insight",
+  "palette": "dark",
+  "topic": "Enterprise AI 2026: Agentic AI & Governance Trends",
+  "pillar": "",
+  "cta_target": "wearezylo.com",
+  "slides": [
+    {
+      "role": "cover",
+      "hook": "Agentic AI with **no brakes**",
+      "kicker": "Enterprise 2026"
+    },
+    {
+      "role": "content",
+      "kicker": "shift 01",
+      "title": "Pilots flood into production",
+      "body": "Over half of enterprises plan to push a large share of AI experiments into live use within months. If your controls and training lag, you are scaling risk, not value."
+    },
+    {
+      "role": "content",
+      "kicker": "shift 02",
+      "title": "Agents outpace governance",
+      "body": "Autonomous and agentic systems are heading towards majority use, while most organisations still lack mature guardrails. When agents act across systems without clear policies, the audit trail fails."
+    },
+    {
+      "role": "content",
+      "kicker": "shift 03",
+      "title": "Efficiency hides a deeper miss",
+      "body": "Most teams chase quick productivity wins; far fewer are redesigning processes around AI. That gap is where competitors build new services while you keep polishing the old workflow."
+    },
+    {
+      "role": "content",
+      "kicker": "shift 04",
+      "title": "Roles stay static, work changes",
+      "body": "AI skill gaps remain the top blocker, and core roles are rarely rewritten for human–AI collaboration. If job design and KPIs stay pre‑AI, your people work around the tools, not with them."
+    },
+    {
+      "role": "content",
+      "kicker": "shift 05",
+      "title": "Sovereign AI becomes default",
+      "body": "Most enterprises now treat regional data control as non‑negotiable. That means traceable data flows and local vendors you can actually see into, not black‑box platforms you hope are compliant."
+    },
+    {
+      "role": "content",
+      "kicker": "shift 06",
+      "title": "Infrastructure ROI comes under audit",
+      "body": "Boards are starting to ask whether AI platforms, agents and SaaS spend tie to measurable outcomes. Without clean telemetry and clear success metrics, AI investment becomes an unprovable cost."
+    },
+    {
+      "role": "content",
+      "kicker": "result",
+      "title": "What mature AI orgs do now",
+      "body": "They pair agentic AI builds with hard governance, redesign roles and processes around AI, and treat infrastructure visibility as a control. That is where we see faster deployment."
+    },
+    {
+      "role": "cta",
+      "line": "Want your 2026 AI plan to survive scrutiny?"
+    }
+  ],
+  "caption": "Agentic AI is arriving faster than your governance stack.\n\nMost enterprises will push pilots into production while roles, policies and infrastructure visibility lag behind.\nThe result: more agents, same bottlenecks, higher risk.\n\nHere are the shifts we see in 2026—and what mature organisations are already doing about them.\nTalk to Zylo about making your AI roadmap production‑grade: wearezylo.com",
+  "hashtags": [
+    "EnterpriseAI",
+    "AIGovernance",
+    "AgenticAI",
+    "DigitalTransformation",
+    "AIAdoption",
+    "AIInTheEnterprise",
+    "AICapability",
+    "AILeadership",
+    "SaaSManagement"
+  ],
+  "source_url": "https://wearezylo.com/resources/whitepapers/state-of-enterprise-ai-2026-zarm-agentic-governance"
+}

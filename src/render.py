@@ -71,6 +71,7 @@ def css_vars(palette):
         "--chip-bg": c["chipBgOnDark"] if dark else c["chipBgOnLight"],
         "--glow": c["glowPurple"],
         "--glow-2": c["glowLavender"],
+        "--arc": c["arcOnDark"] if dark else c["arcOnLight"],
         "--pill-bg": c["fgOnDark"] if dark else c["fgOnLight"],
         "--pill-fg": c["bgDark"] if dark else c["bgLight"],
         "--r-card": TOKENS["radius"]["card"],
