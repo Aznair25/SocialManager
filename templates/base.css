@@ -70,25 +70,51 @@ html, body {
 .tag-chip:empty { display: none; }
 
 /* ---------- body ---------- */
+/* Slide content is centred on both axes — the deck reads as a sequence of
+   single focused statements rather than left-aligned page copy. */
 .body {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  text-align: center;
   min-height: 0;
 }
+.body > * { margin-inline: auto; }
 
-/* cover */
+/* cover — fewest words on the deck, plus the swipe affordance */
+.body.cover { gap: 0; position: relative; }
 .body.cover .hook {
-  font-size: 86px;
+  font-size: 90px;
   font-weight: 600;
-  line-height: 1.14;
+  line-height: 1.12;
   letter-spacing: -0.025em;
   max-width: 900px;
 }
+/* Taken out of the flow so the hook keeps the same vertical centre it has on every
+   other slide — the cue sits near the bottom instead of pushing the hook upward. */
+.cover-cue {
+  position: absolute;
+  bottom: 44px;          /* clears the footer line */
+  left: 50%;
+  transform: translateX(-50%);
+}
+.cover-arrow {
+  color: var(--hl);
+  line-height: 0;
+}
+.cover-swipe {
+  margin-top: 22px;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
 
 /* stat */
-.body.stat { gap: 8px; }
+.body.stat { gap: 8px; align-items: center; }
 .body.stat .value {
   font-size: 250px;
   font-weight: 300;
@@ -120,7 +146,7 @@ html, body {
 .body.content { gap: 0; }
 .kicker {
   display: inline-flex;
-  align-self: flex-start;
+  align-self: center;
   align-items: center;
   border: 1.5px solid var(--chip-border);
   background: var(--chip-bg);
@@ -154,7 +180,7 @@ html, body {
 .body.mythfact { gap: 0; justify-content: center; }
 .mf-chip {
   display: inline-flex;
-  align-self: flex-start;
+  align-self: center;
   border: 1.5px solid var(--chip-border);
   background: var(--chip-bg);
   border-radius: var(--r-pill);
@@ -187,11 +213,11 @@ html, body {
 .mf-div {
   width: 88px;
   border-top: 2px solid var(--chip-border);
-  margin: 64px 0;
+  margin: 64px auto;
 }
 
 /* cta */
-.body.cta { align-items: flex-start; }
+.body.cta { align-items: center; }
 .body.cta .cta-line {
   font-size: 70px;
   font-weight: 600;
@@ -250,14 +276,3 @@ html, body {
   color: var(--muted);
 }
 .index { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
-.swipe-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  background: var(--pill-bg);
-  color: var(--pill-fg);
-  border-radius: var(--r-pill);
-  padding: 16px 36px;
-  font-size: 26px;
-  font-weight: 500;
-}

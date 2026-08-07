@@ -45,6 +45,31 @@ ARCHETYPE_GUIDE = {
     ),
 }
 
+ENGAGEMENT = (
+    "THIS IS A SCROLLING FEED, NOT A DOCUMENT. Every slide has to earn the next swipe.\n\n"
+    "THE COVER HOOK is the single most important line — most people read only this.\n"
+    "- 3-8 words. Aim under 45 characters; 55 is a hard failure. Fewest words wins.\n"
+    "- NEVER restate the topic, the source title, or the deck's subject. If the topic is "
+    "'Agentic AI: Orchestrating Enterprise Operations', a hook like 'Orchestrating agentic AI "
+    "operations' is a FAILURE — it is a label, not a hook.\n"
+    "- Make it land one of these: a claim the reader will argue with; the expensive mistake they "
+    "are probably making; a number that stops them; a sharp tension between what they believe and "
+    "what is true.\n"
+    "- Banned openings: 'How to', 'A guide to', 'Understanding', 'The importance of', 'Why you "
+    "should', 'Everything about', and any 'Subject: subtitle' colon construction.\n"
+    "- Write it as something a person would say out loud, not a heading. Fragments are good. "
+    "Two short sentences are good. 'Your AI pilot is not a strategy.' beats 'AI strategy "
+    "considerations for enterprises'.\n\n"
+    "CONTENT SLIDES must be reframed for a reader, not summarised for a file:\n"
+    "- Titles are claims, not labels. 'Governance arrives too late' beats 'Governance'.\n"
+    "- Address the reader as 'you' and 'your'. Name the cost of getting it wrong, or the specific "
+    "thing that changes when they get it right.\n"
+    "- Be concrete: the actual workflow, the actual role, the actual failure. No abstractions "
+    "that could apply to any company.\n"
+    "- Each body ends somewhere the reader wants the next slide. Do not close the loop early.\n"
+    "- Vary the rhythm across slides — do not write eight sentences with the same shape."
+)
+
 VOICE = (
     "Voice: outcome-led, metric-heavy, enterprise-calm. Short declarative sentences. "
     "Numbers do the talking. Forbidden: emojis, exclamation marks, hype words "
@@ -89,7 +114,9 @@ SOURCE_RULES = (
     "supports it or it is one of Zylo's own figures. If the source has no numbers, use none.\n"
     "5. Reframe toward what Zylo does — adoption, capacity building, governance, custom builds. "
     "If the source is about something Zylo does not sell, keep the insight and drop the pitch.\n"
-    "6. A deck is 5-8 points, not a summary. Choose the strongest ideas and cut the rest."
+    "6. A deck is 5-8 points, not a summary. Choose the strongest ideas and cut the rest.\n"
+    "7. The source's headline is NOT your hook. Write a fresh one that would stop the scroll even "
+    "for someone who never saw the original."
 )
 
 
@@ -102,6 +129,7 @@ def source_block(source):
 def system_prompt(archetype):
     return (
         ZYLO + "\n\n"
+        + ENGAGEMENT + "\n\n"
         + VOICE + "\n\n"
         "Archetype '" + archetype + "': " + ARCHETYPE_GUIDE[archetype] + "\n\n"
         "HARD character limits per field (counted after removing ** markers) — exceeding any limit is a failure:\n"

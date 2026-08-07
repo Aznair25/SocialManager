@@ -42,7 +42,41 @@
   overlap check that rejects and re-prompts. Fetching stays plain — no working around login walls
   or paywalls, ever (2026-08-07).
 
+- Layout: slide content is **horizontally centred**; only header and footer stay edge-aligned
+  (owner decision, 2026-08-07). **Vertical centring was already in place and must not change** —
+  `.body` keeps `justify-content: center`.
+- The cover is a hook, not a title: ≤55 chars hard, 3-8 words, plus a circled-arrow visual. Never
+  restates the topic or a source headline (owner decision, 2026-08-07).
+
 ## Log
+
+### 2026-08-07 — Session 3d: engagement pass (cover hooks, centring, visual)
+**Done:** Four owner-reported issues, all fixed and re-rendered across every deck.
+1. *Covers were echoing the title.* Added an `ENGAGEMENT` block to the system prompt: the hook must
+   never restate the topic or a source headline, must be 3-8 words, and must land a contrarian
+   claim / costly mistake / surprising number / sharp tension. Banned "How to", "A guide to",
+   "Understanding", and `Subject: subtitle` colon constructions. Cover hook limit tightened
+   **70 → 55 chars** in `validate.py` and `deck.schema.json`. Measured effect on the same source:
+   `"Turn agentic AI pilots into orchestrated operations"` (55, a title) became
+   `"Your AI pilot is a cul-de-sac"` (29, a hook).
+2. *Content read as information, not engagement.* Same block: titles are claims not labels, bodies
+   address the reader as "you", name the cost of getting it wrong, and end where the reader wants
+   the next slide. Output shifted to "You shipped tech, not an operation", "Governance arrives
+   after the damage", "Your people don't trust the agents".
+3. *Cover needed fewest words + a visual.* Cover now carries a large circled arrow in `--hl` plus a
+   small `swipe` label, centred beneath the hook (inline SVG using `currentColor`, so still
+   token-driven). Replaced the old footer swipe pill; hook type up to 90px.
+4. *Content sat on the left.* `.body` now centres horizontally (`align-items: center` +
+   `text-align: center`); `.kicker`, `.mf-chip`, `.mf-div` and the CTA block centre too. Header and
+   footer stay edge-aligned. Verified across all three archetypes.
+   **Follow-up:** owner clarified only left/right centring was wanted. Vertical was never changed —
+   `justify-content: center` predates this session and is absent from the diff. The one real
+   regression was the cover: adding the arrow pushed the hook ~130px above centre. Fixed by taking
+   the arrow cue out of flow (`.cover-cue`, absolutely positioned, `bottom: 44px` to clear the
+   footer), so the hook holds the same vertical centre as every other slide.
+All 9 decks validate with 0 errors and re-render clean; 73 slides, all 1080×1350.
+**Next:** Owner review of the new cover treatment before the first real posting run. `decks/2026-08-07_agentic-ai-orchestrating-enterprise-ai-o/` is superseded by `agentic-ai-at-scale` (same source, pre-engagement prompt) and can be deleted. Empty `decks/2026-08-07_ai-in-real-estate/` is also stale.
+**Blockers:** None.
 
 ### 2026-08-07 — Session 3c: generation live, source ingestion, company context
 **Done:** Owner added `OPENAI_API_KEY`, so **the generation half ran for the first time** — the

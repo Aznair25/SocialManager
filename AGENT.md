@@ -50,6 +50,10 @@ the new source; do not paste a coloured logo into a template.
 
 Design language: generous negative space, giant light-weight numerals with small labels, white pill buttons with arrow chips, small tag chips (`AI`, `Enterprise`, `Automation`), the logotype small at top-left of each slide, handle `@wearezylotech` in the footer. Dark slides may use a very subtle purple radial glow — never gradients that overpower text.
 
+**Slide content is horizontally centred** (owner decision, 2026-08-07). Body copy, chips, numerals, dividers and CTA blocks all centre left-to-right; only the header (logotype / tag chip) and footer (handle / index) stay edge-aligned. A deck reads as a sequence of single focused statements, not as left-aligned page copy.
+
+Vertical placement is unchanged and must stay that way: `.body` has always used `justify-content: center`, so content sits in the optical middle between header and footer. In a column flexbox `align-items` is the horizontal axis and `justify-content` the vertical one — don't confuse them when editing `base.css`. The cover's arrow cue is absolutely positioned precisely so it cannot push the hook off that vertical centre.
+
 ## Repo map
 
 ```
@@ -133,10 +137,23 @@ directory pages are rejected by a prose-density check rather than being passed o
 ## Archetypes (v1)
 
 **stat** — Zylo-website-style giant numerals. Cover hook → 3–6 stat slides (`value` ≤ 8 chars, `label` ≤ 60, optional `context` ≤ 110) → CTA.
-**insight** — the classic knowledge carousel. Cover hook (≤ 70 chars) → 4–7 content slides (title ≤ 44, body ≤ 200, optional kicker ≤ 24) → CTA.
+**insight** — the classic knowledge carousel. Cover hook (≤ 55 chars) → 4–7 content slides (title ≤ 44, body ≤ 200, optional kicker ≤ 24) → CTA.
 **mythfact** — myth/fact pairs (myth ≤ 90, fact ≤ 160 per slide, 3–5 pairs) or mini case study (client, problem, solution, result slides) → CTA.
 
-Every archetype: slide 1 is always a **cover** (hook + "swipe" pill), last slide is always **cta**. The cta is code-owned apart from its `line` (≤ 60 chars): the renderer prints the `Book a call` pill, then `wearezylo.com`, then `contact@wearezylo.com`, from `brand/tokens.json`. The LLM never writes a URL or email — the generator prompt forbids it, so the contact route can be changed in one place. Slide numbers `01/07` bottom-right.
+## The cover carries the whole post
+
+Most viewers read slide 1 and nothing else, so it is written and designed differently from every other slide.
+
+- **Fewest words in the deck.** 3–8 words, aim under 45 characters; **55 is a hard validator failure** (was 70 until 2026-08-07). Fewer words, larger type.
+- **A hook, never a label.** It must never restate the topic, the deck's subject, or a source article's headline — that is the single most common failure. `Agentic AI: orchestrating operations` is a title; `Your AI pilot is a cul-de-sac` is a hook.
+- It must land one of: a claim the reader will argue with, the expensive mistake they are probably making, a number that stops them, or a tension between what they believe and what is true. Banned openings are listed in `ENGAGEMENT` in `src/generate.py`.
+- **A visual element, not just type.** The cover carries a large circled arrow in `--hl` plus a small `swipe` label, centred under the hook. This replaced the old footer swipe pill. The arrow is inline SVG using `currentColor`, so it stays token-driven.
+
+Content slides are reframed for a scrolling reader too: titles are claims rather than labels, bodies address the reader as "you", name the cost of getting it wrong, and end somewhere that earns the next swipe. This is enforced by the `ENGAGEMENT` block in the system prompt — edit it there, not per-deck.
+
+## Archetype rules
+
+Every archetype: slide 1 is always a **cover**, last slide is always **cta**. The cta is code-owned apart from its `line` (≤ 60 chars): the renderer prints the `Book a call` pill, then `wearezylo.com`, then `contact@wearezylo.com`, from `brand/tokens.json`. The LLM never writes a URL or email — the generator prompt forbids it, so the contact route can be changed in one place. Slide numbers `01/07` bottom-right.
 
 ## Captions
 

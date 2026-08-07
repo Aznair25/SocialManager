@@ -10,7 +10,8 @@ import sys
 from pathlib import Path
 
 LIMITS = {
-    "cover":    {"required": ["hook"], "fields": {"hook": 70, "kicker": 24}},
+    # hook is capped hard at 55: the cover is a scroll-stopper, not a summary.
+    "cover":    {"required": ["hook"], "fields": {"hook": 55, "kicker": 24}},
     "stat":     {"required": ["value", "label"], "fields": {"value": 8, "label": 60, "context": 110, "kicker": 24}},
     "content":  {"required": ["title", "body"], "fields": {"kicker": 24, "title": 44, "body": 200}},
     "mythfact": {"required": ["myth", "fact"], "fields": {"myth": 90, "fact": 160}},

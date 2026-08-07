@@ -17,7 +17,8 @@
       "items": {
         "oneOf": [
           {
-            "properties": { "role": { "const": "cover" }, "hook": { "maxLength": 70 }, "kicker": { "maxLength": 24 } },
+            "$comment": "hook is a scroll-stopper, not a summary: 3-8 words, never the topic or source title restated",
+            "properties": { "role": { "const": "cover" }, "hook": { "maxLength": 55 }, "kicker": { "maxLength": 24 } },
             "required": ["role", "hook"]
           },
           {

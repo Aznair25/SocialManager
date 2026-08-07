@@ -1,0 +1,75 @@
+{
+  "id": "2026-08-07_agentic-ai-at-scale",
+  "archetype": "insight",
+  "palette": "dark",
+  "topic": "Agentic AI: Orchestrating Enterprise AI Operations",
+  "pillar": "",
+  "cta_target": "wearezylo.com",
+  "slides": [
+    {
+      "role": "cover",
+      "hook": "Your AI pilot is a cul‑de‑sac",
+      "kicker": "Scaling agentic AI"
+    },
+    {
+      "role": "content",
+      "kicker": "sign 01",
+      "title": "Pilots work. Production stalls.",
+      "body": "Teams can build clever agent demos, but they die in the handover to operations—no owner, no SLA, no budget line, no integration into how work actually gets done."
+    },
+    {
+      "role": "content",
+      "kicker": "sign 02",
+      "title": "You shipped tech, not an operation",
+      "body": "Agentic AI only pays off when it is treated like a business capability—with roles, runbooks, risk controls and KPIs—not as a one‑off innovation artefact."
+    },
+    {
+      "role": "content",
+      "kicker": "sign 03",
+      "title": "Governance arrives after the damage",
+      "body": "Most firms bolt on AI governance once agents are live. By then, shadow use, data leakage and inconsistent decisions are already embedded into core workflows."
+    },
+    {
+      "role": "content",
+      "kicker": "sign 04",
+      "title": "Your people don’t trust the agents",
+      "body": "Without clear guardrails, escalation paths and training, staff either bypass the system or over‑rely on it—both quietly erode service quality and accountability."
+    },
+    {
+      "role": "content",
+      "kicker": "sign 05",
+      "title": "No operating model, no scale",
+      "body": "If every new agent is a bespoke project, you cannot scale. You need a repeatable way to design, approve, deploy and monitor agents across functions."
+    },
+    {
+      "role": "content",
+      "kicker": "sign 06",
+      "title": "Oversight is manual and reactive",
+      "body": "Tickets only surface when something breaks. Mature setups treat agents like digital colleagues—continuous monitoring, performance reviews and retraining cycles."
+    },
+    {
+      "role": "content",
+      "kicker": "sign 07",
+      "title": "Vendors own the critical knowledge",
+      "body": "When external partners build everything, your teams never learn to tune, govern or extend the agents. Dependency risk climbs just as usage becomes business‑critical."
+    },
+    {
+      "role": "cta",
+      "line": "Redesign your AI operations next."
+    }
+  ],
+  "caption": "Your AI pilot is not an AI operation.\n\nAgentic AI can choreograph complex work across your organisation—but only if you treat it as an operating capability, not a lab experiment.\nMost enterprises stall between “great demo” and “reliable system”: no owner, no guardrails, no training, no way to scale beyond a few fragile use cases.\n\nZylo designs the operating model, governance and in‑house capability that let agentic AI run safely at enterprise scale. wearezylo.com",
+  "hashtags": [
+    "EnterpriseAI",
+    "AIAdoption",
+    "AITransformation",
+    "AgenticAI",
+    "AIGovernance",
+    "OperatingModel",
+    "DigitalOperations",
+    "AIInTheEnterprise",
+    "AutomationStrategy",
+    "AIConsulting"
+  ],
+  "source_url": "https://wearezylo.com/resources/whitepapers/agentic-ai-orchestrating-intelligent-operations"
+}
