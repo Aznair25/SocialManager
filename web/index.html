@@ -87,6 +87,12 @@
   .tag{display:inline-block;background:var(--chip);border:1px solid var(--border);
        border-radius:var(--pill);padding:3px 12px;font-size:12px;color:var(--muted)}
   .hidden{display:none}
+  .tabs{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+  .tab{background:var(--chip);border:1px solid var(--border);color:var(--muted);
+       border-radius:var(--pill);padding:10px 22px;font-size:14px;font-weight:500;
+       transition:color .15s,border-color .15s}
+  .tab:hover{color:var(--fg)}
+  .tab.on{background:#fff;color:#07090F;border-color:#fff}
   .warnbar{background:rgba(252,165,165,.09);border:1px solid #FCA5A5;color:#FCA5A5;
            border-radius:14px;padding:14px 18px;font-size:14px;margin-bottom:24px}
   footer{margin-top:64px;color:var(--muted);font-size:13px;border-top:1px solid var(--border);padding-top:22px}
@@ -100,9 +106,10 @@
   </header>
 
   <h1>Turn a topic into a <span class="hl">ready-to-post</span> carousel.</h1>
-  <p class="lede">Type what the deck should be about. The studio writes the copy, checks it
-     against the brand rules, and renders every slide at 1080×1350. Review the contact sheet,
-     then download and upload to Instagram.</p>
+  <p class="lede">Start from a topic, or point it at an article or LinkedIn post and let it take
+     the points. Either way the studio writes the copy in Zylo's own words, checks it against the
+     brand rules, and renders every slide at 1080×1350. Review the contact sheet, then download
+     and upload to Instagram.</p>
 
   <div id="nokey" class="warnbar hidden">
     No OpenAI API key found. Add <code>OPENAI_API_KEY</code> to the <code>.env</code> file in the
@@ -110,10 +117,31 @@
   </div>
 
   <div class="card">
-    <div class="field">
+    <div class="tabs">
+      <button class="tab on" data-mode="topic">From a topic</button>
+      <button class="tab" data-mode="url">From a link</button>
+      <button class="tab" data-mode="text">From pasted text</button>
+    </div>
+
+    <div class="field" data-for="topic">
       <label for="topic">Topic</label>
       <input id="topic" placeholder="How AI agents cut enterprise support costs" autocomplete="off">
       <p class="hint">One clear subject. The writing is handled for you.</p>
+    </div>
+
+    <div class="field hidden" data-for="url">
+      <label for="source_url">Article or post link</label>
+      <input id="source_url" placeholder="https://example.com/blog/ai-governance-in-practice" autocomplete="off">
+      <p class="hint">A blog post or a public LinkedIn post. The studio reads it, takes the
+         points, and writes the deck in Zylo's own words — it never copies the original.
+         If the site blocks the read, use <strong>From pasted text</strong> instead.</p>
+    </div>
+
+    <div class="field hidden" data-for="text">
+      <label for="source_text">Paste the article or post</label>
+      <textarea id="source_text" style="min-height:170px"
+                placeholder="Paste the full text here…"></textarea>
+      <p class="hint">Used as research notes only. The deck is rewritten from scratch.</p>
     </div>
     <div class="row">
       <div>
@@ -142,6 +170,7 @@
   <section id="progress" class="hidden">
     <h2>Building</h2>
     <div class="steps">
+      <div class="step" data-step="reading"><span class="dot"></span>Reading source</div>
       <div class="step" data-step="generating"><span class="dot"></span>Writing copy</div>
       <div class="step" data-step="validating"><span class="dot"></span>Checking brand rules</div>
       <div class="step" data-step="rendering"><span class="dot"></span>Rendering slides</div>
@@ -177,8 +206,22 @@
 
 <script>
 const $ = s => document.querySelector(s);
-const STEPS = ['generating','validating','rendering','done'];
+const STEPS = ['reading','generating','validating','rendering','done'];
 let poll = null;
+let mode = 'topic';
+
+function applyMode() {
+  document.querySelectorAll('[data-for]').forEach(f =>
+    f.classList.toggle('hidden', f.dataset.for !== mode));
+  // No source to read in topic mode — don't show a step that never runs.
+  $('.step[data-step="reading"]').classList.toggle('hidden', mode === 'topic');
+}
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+  mode = t.dataset.mode;
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x === t));
+  applyMode();
+});
+applyMode();
 
 async function api(path, opts) {
   const r = await fetch(path, opts);
@@ -243,19 +286,28 @@ function watch(job_id) {
 
 $('#go').onclick = async () => {
   const topic = $('#topic').value.trim();
-  if (topic.length < 3) return $('#topic').focus();
+  const url = $('#source_url').value.trim();
+  const text = $('#source_text').value.trim();
+  if (mode === 'topic' && topic.length < 3) return $('#topic').focus();
+  if (mode === 'url' && !url) return $('#source_url').focus();
+  if (mode === 'text' && text.length < 200) return $('#source_text').focus();
+
   $('#go').disabled = true;
   $('#go').textContent = 'Working…';
   $('#result').classList.add('hidden');
   $('#progress').classList.remove('hidden');
   $('#log').textContent = '';
-  setSteps('generating');
+  setSteps(mode === 'topic' ? 'generating' : 'reading');
   $('#progress').scrollIntoView({ behavior: 'smooth' });
   try {
     const { job_id } = await api('/api/decks', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic, archetype: $('#archetype').value,
-                             palette: $('#palette').value, notes: $('#notes').value.trim() || null })
+      body: JSON.stringify({ topic: topic || null,
+                             archetype: $('#archetype').value,
+                             palette: $('#palette').value,
+                             notes: $('#notes').value.trim() || null,
+                             source_url: mode === 'url' ? url : null,
+                             source_text: mode === 'text' ? text : null })
     });
     watch(job_id);
   } catch (e) {

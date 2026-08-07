@@ -1,0 +1,74 @@
+{
+  "id": "2026-08-07_ai-adoption-capability-gap",
+  "archetype": "insight",
+  "palette": "dark",
+  "topic": "I've spent the last eighteen months helping banks and insurers roll out AI, and I keep seeing the same failure pattern.",
+  "pillar": "",
+  "cta_target": "wearezylo.com",
+  "slides": [
+    {
+      "role": "cover",
+      "hook": "**AI licences everywhere. Real capability almost nowhere.**",
+      "kicker": "Enterprise insight"
+    },
+    {
+      "role": "content",
+      "kicker": "Pattern 01",
+      "title": "Seats deployed. No habits formed.",
+      "body": "Banks and insurers roll AI out to thousands of staff, then stop. Licences are provisioned, but daily workflows stay the same. Without new norms, “deployment” is just shelfware."
+    },
+    {
+      "role": "content",
+      "kicker": "Pattern 02",
+      "title": "Middle managers are the fulcrum.",
+      "body": "Executive briefings create intent, not behaviour. The teams that move the needle train line managers to redesign processes, set usage expectations and coach AI into everyday work."
+    },
+    {
+      "role": "content",
+      "kicker": "Pattern 03",
+      "title": "Governance arrives too late.",
+      "body": "Policies get written after the first scare, not before. Regulated firms then burn months explaining opaque decisions. Clear usage rules and escalation paths up front avoid regulatory fire drills."
+    },
+    {
+      "role": "content",
+      "kicker": "Pattern 04",
+      "title": "Consultants leave. Risk stays.",
+      "body": "Outsourced builds can impress, then stall. When external teams own the systems and know‑how, internal teams can’t adapt or defend them. Durable value comes from in‑house capability and ownership."
+    },
+    {
+      "role": "content",
+      "kicker": "Pattern 05",
+      "title": "Wrong metric: licences, not use.",
+      "body": "Counting users with access hides the real story. Weekly active use by role, workflow coverage and time saved per process show whether AI has changed how work gets done."
+    },
+    {
+      "role": "content",
+      "kicker": "Pattern 06",
+      "title": "Scope kills momentum.",
+      "body": "Trying to “transform everything” freezes progress. High performers pick one painful workflow, automate it end‑to‑end, prove value, then sequence the next targets from a live backlog."
+    },
+    {
+      "role": "content",
+      "kicker": "Pattern 07",
+      "title": "Tech is ready. The model isn’t.",
+      "body": "The limiting factor is operating model, not algorithms. Adoption, capability building, governance and fit‑for‑purpose systems decide whether AI is a cost line or a performance lever."
+    },
+    {
+      "role": "cta",
+      "line": "Fix the operating model before more AI spend."
+    }
+  ],
+  "caption": "Most banks and insurers now have AI licences. Very few have AI habits.\n\nThe gap isn’t tools. It’s operating model, governance and in‑house capability.\nShift the focus from “what did we deploy?” to “how do we work now?”, and AI stops being a pilot and starts being infrastructure.\n\nTo build that shift deliberately, not by trial and error, talk to Zylo — wearezylo.com",
+  "hashtags": [
+    "AIConsulting",
+    "EnterpriseAI",
+    "DigitalTransformation",
+    "BankingInnovation",
+    "InsuranceTransformation",
+    "AIAdoption",
+    "AIGovernance",
+    "OperatingModel",
+    "ChangeLeadership",
+    "FutureOfWork"
+  ]
+}

@@ -15,9 +15,10 @@
 | Sample decks ×3 (deck.json) | ✅ Done — validated and rendered |
 | First render run (PNG output) | ✅ Done — 2026-08-07, all slides 1080×1350, visually inspected |
 | Cleanup: delete deprecated `src/*.js`, `package.json` | ✅ Done |
-| LLM content generator (`src/generate.py`) | ✅ Ported to OpenAI (`gpt-5.1`) 
-| HTTP API (`src/app.py`) | ✅ Done — render path tested end to end |
-| Web UI (`web/index.html`) | ✅ Done — loads, lists decks, no console errors |
+| LLM content generator (`src/generate.py`) | ✅ Done — OpenAI `gpt-5.1`, executed, valid on attempt 1 |
+| Source ingestion (`src/extract.py`) | ✅ Done — blog + real LinkedIn post verified, 0 copied phrasing |
+| HTTP API (`src/app.py`) | ✅ Done — full pipeline tested end to end |
+| Web UI (`web/index.html`) | ✅ Done — 3 input modes, no console errors |
 | Real Zylo logo on slides | ✅ Done — owner supplied 2026-08-07, extracted to an alpha mask |
 | Vendored Poppins in `brand/fonts/` | 🔲 Optional — currently Google Fonts at render time |
 | IG publishing integration | ⏸ Deferred by design |
@@ -37,7 +38,36 @@
 - CTA contact route: `contact@wearezylo.com`, code-owned in `tokens.json`; the LLM is forbidden from
   writing any URL or email (2026-08-07).
 
+- Source-derived decks must never reproduce the source: prompt rules **plus** a mechanical 7-word
+  overlap check that rejects and re-prompts. Fetching stays plain — no working around login walls
+  or paywalls, ever (2026-08-07).
+
 ## Log
+
+### 2026-08-07 — Session 3c: generation live, source ingestion, company context
+**Done:** Owner added `OPENAI_API_KEY`, so **the generation half ran for the first time** — the
+pipeline is now proven end to end. Sharpened the company context in the prompt: Zylo sells adoption
+workshops, capacity building, AI governance and in-house AI development, written for the executive
+buying those services rather than for developers.
+Built **source ingestion** (`src/extract.py`): give it a blog or LinkedIn post URL and it pulls the
+readable text via Playwright's Chromium, then the generator mines it for points. Verified on a real
+public LinkedIn post and on a long article. Guardrails found by actually testing: HTTP status is
+checked (a 404 page was becoming "source material"), a prose-density floor rejects feeds/directory/
+error pages that survive line filtering, redirects to `/login/` are reported as such, and page
+titles are collapsed and stripped of site/author suffixes before becoming the deck slug.
+**Not copying** is enforced twice: the prompt treats the text as research notes, and
+`verbatim_hits()` rejects any 7-consecutive-word overlap and re-prompts. Both test decks came back
+with **zero overlap even at 5-word runs** — genuinely reworded, source never named.
+Fixed a real generation defect on the way: the model consistently landed 3-20 chars over the 200-char
+body limit and could not self-correct, because "203 > 200" asks it to count precisely. Retries now
+name an explicit target length (limit − 25) and instruct deletion rather than rewording; the system
+prompt also asks for ~85% of each limit. Three decks that previously failed after 3 attempts now
+pass on attempt 1.
+API and UI extended: `source_url` / `source_text`, a `reading` stage, and three input modes
+(topic / link / pasted text) with the paste fallback surfaced for sites that block reading.
+**Next:** Ask owner which archetype/palette rotation to use for the first real posting run. Consider
+vendoring Poppins into `brand/fonts/` so rendering stops depending on Google Fonts at run time.
+**Blockers:** None.
 
 ### 2026-08-07 — Session 3: first execution, OpenAI port, API + UI
 **Done:** Deleted deprecated `src/render.js`, `src/validate.js`, `package.json`. Installed deps and

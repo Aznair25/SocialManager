@@ -6,6 +6,8 @@ Rules for any agent (or human) working in this repo. Read this fully before touc
 
 Generate **knowledge decks** — multi-slide Instagram carousels — for **Zylo** (AI consultancy, wearezylo.com, @wearezylotech). Output must be minimal, sleek, sophisticated, and *identical in spirit to the Zylo website theme*. Consistency across every deck is the product. Instagram publishing and topic sourcing are **deferred** — this repo only generates.
 
+**What Zylo sells** (drives every deck's angle): workshops that get organisations adopting AI; capacity building so AI capability stays in-house; AI governance (policy, risk, oversight) for regulated enterprises; and an in-house AI development team building custom agents, automation and software. Write for the executive or transformation lead buying those services — never generic AI commentary, never developer-tool content.
+
 ## Non-negotiable rules
 
 1. **Never use AI image generation to draw slides or any text.** All slides are rendered deterministically from HTML/CSS templates via headless Chromium. (AI-generated *background art* may be introduced later only with explicit owner approval, always with text composited by the renderer.)
@@ -56,7 +58,7 @@ brand/          tokens.json; logo-source.png (owner's original) + logo-zylo.png 
 schema/         deck.schema.json — the contract every deck.json must satisfy
 templates/      base.css (design system) + one HTML template per slide role
 src/            generate.py (LLM content brain), validate.py, render.py (incl. contact sheet),
-                app.py (FastAPI: REST API + serves the web UI)
+                extract.py (URL -> reference text), app.py (FastAPI: REST API + serves the web UI)
 web/            index.html — single-page studio UI (vanilla JS, no build step)
 decks/          output: decks/YYYY-MM-DD_slug/{deck.json, slides/*.png, contact-sheet.png, caption.txt}
 .env.example    copy to .env, add OPENAI_API_KEY (generation only; rendering needs no key)
@@ -83,7 +85,7 @@ a human reviews the contact sheet and uploads manually.
 
 | Method | Path | Purpose |
 |---|---|---|
-| `POST` | `/api/decks` | `{topic, archetype, palette, notes?}` → `{job_id}`; runs generate → validate → render |
+| `POST` | `/api/decks` | `{topic?, archetype, palette, notes?, source_url?, source_text?}` → `{job_id}`; runs read → generate → validate → render. Needs a topic **or** a source |
 | `GET` | `/api/jobs/{job_id}` | job status, stage, streaming log lines |
 | `GET` | `/api/decks` | list all decks |
 | `GET` | `/api/decks/{id}` | deck.json + slide list + caption |
@@ -98,10 +100,35 @@ because Chromium and the deck directory are shared state.
 
 0. Or skip all of this: `python src/app.py` and drive the whole pipeline from the browser UI. Steps 1–3 are exactly what it runs.
 1. Generate the spec: `python src/generate.py "<topic>" --archetype <stat|insight|mythfact> [--palette dark|light] [--notes "..."]` — the LLM writes slides/caption/hashtags only; code owns id/palette/archetype. It self-corrects against the validator (3 attempts). Hand-writing deck.json is also fine.
+   Instead of a topic you may pass **source material**: `--url <blog or LinkedIn post>` or `--source-file <txt>`. See "Working from a source" below.
 2. `python src/validate.py decks/<dir>/deck.json` — must pass (generate.py already ran it; re-run after any manual edit).
 3. `python src/render.py decks/<dir>/deck.json` — writes `slides/NN.png` + `contact-sheet.png` + `caption.txt`.
 4. Visually inspect every slide (agents: actually open/Read the PNGs — check overflow, contrast, spacing).
 5. Log in PROGRESS.md; present contact sheet for human approval.
+
+## Working from a source (blog / LinkedIn post)
+
+`src/extract.py` pulls the readable text out of a URL using the Chromium that Playwright already
+installs (most platforms render body copy with JS). That text is **reference material only**.
+
+**The deck is never a copy of the source.** Three things enforce it:
+
+1. The generator prompt treats the text as research notes: extract the points, write every slide
+   from scratch, never reuse a sentence or distinctive phrase, never name or allude to the source
+   or its author, drop anecdotes and self-promotion, invent no statistics.
+2. `verbatim_hits()` in `generate.py` then checks mechanically — any **7 consecutive words** shared
+   with the source is a rejection, fed back into the same correction loop the validator uses. A deck
+   only ships once it comes back clean, logged as *"original wording confirmed"*.
+3. Char limits force compression anyway: a 200-char body cannot carry a copied paragraph.
+
+Reframe toward what Zylo sells. If the source is about something Zylo does not offer, keep the
+insight and drop the pitch.
+
+Fetching is plain and unauthenticated — nothing here works around a login wall, paywall or bot
+check, and it must stay that way. Sites that refuse (LinkedIn often does for non-public posts)
+raise `ExtractError` telling the operator to paste the text instead; error pages, feeds and
+directory pages are rejected by a prose-density check rather than being passed off as an article.
+`deck.json` records `source_url` for provenance; it is never rendered on a slide.
 
 ## Archetypes (v1)
 

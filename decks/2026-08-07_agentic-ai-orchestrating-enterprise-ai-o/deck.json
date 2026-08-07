@@ -1,0 +1,74 @@
+{
+  "id": "2026-08-07_agentic-ai-orchestrating-enterprise-ai-o",
+  "archetype": "insight",
+  "palette": "dark",
+  "topic": "Agentic AI: Orchestrating Enterprise AI Operations",
+  "pillar": "",
+  "cta_target": "wearezylo.com",
+  "slides": [
+    {
+      "role": "cover",
+      "hook": "Turn agentic AI pilots into **orchestrated operations**",
+      "kicker": "Agentic AI at scale"
+    },
+    {
+      "role": "content",
+      "kicker": "Signal 01",
+      "title": "Pilots without a model",
+      "body": "Most enterprises can prove a single AI agent works. The failure point is coordinating dozens across functions—without a clear operating model, value stays stuck in pilots."
+    },
+    {
+      "role": "content",
+      "kicker": "Signal 02",
+      "title": "Treat agents as operators, not clever tools",
+      "body": "Agentic AI makes decisions, triggers workflows and calls systems. That demands role design, escalation rules and performance expectations—just as you would for human teams."
+    },
+    {
+      "role": "content",
+      "kicker": "Signal 03",
+      "title": "Continuous AI oversight",
+      "body": "Policies alone are not enough. Agentic AI needs live oversight—runtime monitoring, audit trails, approval flows and clear boundaries on what agents may decide or execute."
+    },
+    {
+      "role": "content",
+      "kicker": "Signal 04",
+      "title": "Design the AI workforce",
+      "body": "Scaling agents changes work. You need new roles, playbooks and training so teams can supervise, debug and improve agents instead of bypassing them when pressure rises."
+    },
+    {
+      "role": "content",
+      "kicker": "Signal 05",
+      "title": "Wire AI into operations",
+      "body": "Agentic AI only delivers durable value when wired into core workflows, data and controls—not parked in innovation labs. Design for SLAs, incident paths and handoffs from day one."
+    },
+    {
+      "role": "content",
+      "kicker": "Signal 06",
+      "title": "Managed agent operations",
+      "body": "A managed AI operations layer lets you standardise monitoring, change control and compliance while business units experiment—bridging the gap between POC and enterprise roll-out."
+    },
+    {
+      "role": "content",
+      "kicker": "Signal 07",
+      "title": "Own your agent capability",
+      "body": "External teams can stand up early agents, but long-term economics depend on internal capability. Upskill product, risk and ops so they can own, tune and extend the agent fleet."
+    },
+    {
+      "role": "cta",
+      "line": "Ready to orchestrate agentic AI across your operations?"
+    }
+  ],
+  "caption": "Agentic AI is moving from demos to decision-making. The gap is operations.\n\nEnterprises don’t struggle to prove an agent works. They struggle to govern dozens of them, safely, across core processes.\nZylo designs the operating models, governance and in-house skills so your agents run as reliable operators—not fragile experiments.\n\nIf you’re planning agentic AI beyond pilots, it’s time to design how it will actually run at scale — wearezylo.com",
+  "hashtags": [
+    "AgenticAI",
+    "EnterpriseAI",
+    "AIAdoption",
+    "AIGovernance",
+    "AIOperations",
+    "DigitalTransformation",
+    "AIConsulting",
+    "AutomationStrategy",
+    "OperationalExcellence"
+  ],
+  "source_url": "https://wearezylo.com/resources/whitepapers/agentic-ai-orchestrating-intelligent-operations"
+}

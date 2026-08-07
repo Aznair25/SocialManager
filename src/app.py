@@ -22,7 +22,8 @@ from fastapi.responses import FileResponse, HTMLResponse, PlainTextResponse, Str
 from pydantic import BaseModel, Field
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from generate import ARCHETYPE_GUIDE, GenerationError, generate, load_env, slugify  # noqa: E402
+from extract import ExtractError, extract_from_url  # noqa: E402
+from generate import ARCHETYPE_GUIDE, GenerationError, generate, load_env  # noqa: E402
 from render import RenderError, render_deck  # noqa: E402
 from validate import validate_deck  # noqa: E402
 
@@ -42,12 +43,15 @@ PIPELINE_LOCK = threading.Lock()
 
 
 class DeckRequest(BaseModel):
-    topic: str = Field(min_length=3, max_length=300)
+    topic: str | None = Field(default=None, max_length=300)
     archetype: str = "insight"
     palette: str = "dark"
     notes: str | None = Field(default=None, max_length=1000)
     slug: str | None = None
     pillar: str | None = None
+    # Optional reference material: a URL to read, or text pasted in when a site blocks the fetch.
+    source_url: str | None = Field(default=None, max_length=2000)
+    source_text: str | None = Field(default=None, max_length=40000)
 
 
 def _set(job_id, **kw):
@@ -76,12 +80,22 @@ def run_pipeline(job_id, req: DeckRequest):
     API refuses to start inside an asyncio event loop."""
     try:
         with PIPELINE_LOCK:
+            source = None
+            if req.source_url:
+                _set(job_id, status="running", stage="reading")
+                _log(job_id, f"Reading {req.source_url}")
+                source = extract_from_url(req.source_url, on_event=lambda m: _log(job_id, m))
+            elif req.source_text:
+                _set(job_id, status="running", stage="reading")
+                source = {"url": "", "title": "", "text": req.source_text.strip()}
+                _log(job_id, f"Using {len(source['text'])} characters of pasted source text")
+
             _set(job_id, status="running", stage="generating")
-            _log(job_id, f"Generating copy for: {req.topic}")
+            _log(job_id, "Writing the deck" + (" from the source points" if source else f" for: {req.topic}"))
             deck = generate(
                 req.topic, req.archetype, req.palette,
                 slug=req.slug, pillar=req.pillar, notes=req.notes,
-                on_event=lambda m: _log(job_id, m),
+                on_event=lambda m: _log(job_id, m), source=source,
             )
 
             _set(job_id, stage="validating", deck_id=deck["id"])
@@ -103,7 +117,7 @@ def run_pipeline(job_id, req: DeckRequest):
 
             _set(job_id, status="done", stage="done")
             _log(job_id, "Deck ready for review")
-    except (GenerationError, RenderError) as e:
+    except (ExtractError, GenerationError, RenderError) as e:
         _set(job_id, status="error", stage="failed", error=str(e))
         _log(job_id, f"FAILED: {e}")
     except Exception as e:  # unexpected — still surface it to the UI
@@ -118,6 +132,9 @@ def create_deck(req: DeckRequest):
         raise HTTPException(400, f"archetype must be one of {sorted(ARCHETYPE_GUIDE)}")
     if req.palette not in ("dark", "light"):
         raise HTTPException(400, "palette must be 'dark' or 'light'")
+    has_source = bool((req.source_url or "").strip() or (req.source_text or "").strip())
+    if not has_source and len((req.topic or "").strip()) < 3:
+        raise HTTPException(400, "give a topic, or a source_url / source_text to draw one from")
 
     job_id = uuid.uuid4().hex[:12]
     with JOBS_LOCK:

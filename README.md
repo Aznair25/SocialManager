@@ -38,6 +38,21 @@ python src/render.py   decks/<dir>/deck.json   # slides + contact sheet + captio
 
 Rendering is fully local and needs no API key — only generation calls OpenAI.
 
+## Build from an article or LinkedIn post
+
+Instead of a topic, point it at a link and it takes the *points* — the deck is written from
+scratch in Zylo's voice, never copied. A mechanical check rejects any seven consecutive words
+shared with the source and makes the model rewrite.
+
+```bash
+python src/generate.py --url "https://example.com/blog/post" --archetype insight --render
+python src/generate.py --source-file notes.txt --archetype mythfact --render
+```
+
+Fetching is plain and unauthenticated. Some sites (LinkedIn included, for anything not fully
+public) will refuse — the error says so, and you can paste the text in instead, in the UI or
+with `--source-file`.
+
 ## Output
 
 ```
