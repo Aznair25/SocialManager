@@ -1,0 +1,75 @@
+{
+  "id": "2026-08-07_zylo-ai-automation-partner",
+  "archetype": "insight",
+  "palette": "dark",
+  "topic": "ZYLO - AI Automation Partner",
+  "pillar": "",
+  "cta_target": "wearezylo.com",
+  "slides": [
+    {
+      "role": "cover",
+      "hook": "You don’t need more AI pilots",
+      "kicker": "AI automation partner"
+    },
+    {
+      "role": "content",
+      "kicker": "signal 01",
+      "title": "Strategy before shiny agents",
+      "body": "We start from where value moves today—your processes, constraints and revenue levers—then design automation around that, not around the latest tool or model demo."
+    },
+    {
+      "role": "content",
+      "kicker": "signal 02",
+      "title": "From manual work to live systems",
+      "body": "We map the actual tasks your teams do, replace repetitive steps with AI agents and workflow automation, and ship production systems instead of slideware prototypes."
+    },
+    {
+      "role": "content",
+      "kicker": "signal 03",
+      "title": "Built for scale, not for show",
+      "body": "Architecture, permissions, monitoring and fail-safes are designed for your current stack and growth plans so the first wins don’t collapse under real customer volume."
+    },
+    {
+      "role": "content",
+      "kicker": "signal 04",
+      "title": "UX your teams will adopt",
+      "body": "Design and engineering sit together so AI fits into existing tools and habits—clean interfaces, clear handoffs, and explainable outputs that people actually trust and use."
+    },
+    {
+      "role": "content",
+      "kicker": "signal 05",
+      "title": "Capability that stays in‑house",
+      "body": "We train your operators, product leads and managers on workflows, prompts and oversight so you’re not dependent on us every time a process or model changes."
+    },
+    {
+      "role": "content",
+      "kicker": "signal 06",
+      "title": "Governance from day one",
+      "body": "Access, data boundaries, approvals and audit trails are baked into the build, giving you compliance-ready automation instead of shadow AI that risk teams block later."
+    },
+    {
+      "role": "content",
+      "kicker": "signal 07",
+      "title": "Partner for complex operations",
+      "body": "We work best where stakes are high—regulated, multi-team environments that need durable automation, not one-off scripts—so AI becomes core infrastructure, not a side project."
+    },
+    {
+      "role": "cta",
+      "line": "Ready for AI that your whole organisation can run?"
+    }
+  ],
+  "caption": "Most AI work never makes it past the pilot.\n\nAn automation partner should leave you with live systems, trained teams and governance that stands up in risk review.\nNot a demo that dies in month three.\n\nIf that’s the bar you’re aiming for, Zylo is built to meet it — and keep your capability in‑house. wearezylo.com",
+  "hashtags": [
+    "EnterpriseAI",
+    "AIAutomation",
+    "AIConsulting",
+    "DigitalTransformation",
+    "AIAdoption",
+    "AIGovernance",
+    "AIInProduction",
+    "AutomationStrategy",
+    "AIForOperations",
+    "Zylo"
+  ],
+  "source_url": "https://wearezylo.com/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAcGRvZgJleHRuA2FlbQIxMQBzcnRjBmFwcF9pZA85MzY2MTk3NDMzOTI0NTkAAaco2Gsre_raH5YfAM_HjN5gZrsKsWqqAIEO2FiAhQ53gRqaqem68q4XI9B8-Q_aem_cnWh712TLsZVm84wON4boQ"
+}
