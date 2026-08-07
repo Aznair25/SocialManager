@@ -30,7 +30,7 @@ DEFAULT_MODEL = "gpt-5.1"
 
 ARCHETYPE_GUIDE = {
     "stat": (
-        "Slides: 1 cover (hook + optional kicker), then 3-6 'stat' slides "
+        "Slides: 1 cover (hook only — the cover renders no kicker), then 3-6 'stat' slides "
         "(value like '+85%', '3×', '−40%', '50+'; label; optional context sentence), then 1 cta. "
         "Zylo's real figures — this is the COMPLETE list, and each belongs to ONE claim: "
         "+85% operational efficiency, 3× faster deployment, −40% manual processes, 50+ companies, "
@@ -40,12 +40,12 @@ ARCHETYPE_GUIDE = {
         "slides, make the deck shorter rather than inventing one."
     ),
     "insight": (
-        "Slides: 1 cover (hook + optional kicker), then 4-7 'content' slides "
+        "Slides: 1 cover (hook only — the cover renders no kicker), then 4-7 'content' slides "
         "(kicker like 'sign 01' or a short series tag; title; body of 1-2 sentences), then 1 cta. "
         "One idea per slide. Bodies concrete and operational, not abstract."
     ),
     "mythfact": (
-        "Slides: 1 cover (hook + optional kicker), then 3-5 'mythfact' slides "
+        "Slides: 1 cover (hook only — the cover renders no kicker), then 3-5 'mythfact' slides "
         "(myth: short belief stated plainly; fact: the correction, specific and confident), then 1 cta."
     ),
 }
@@ -149,8 +149,8 @@ def system_prompt(archetype, framework="auto"):
         "Emphasis: you MAY wrap one key phrase in the cover hook with **double asterisks** (renders as accent color). "
         "Use at most one highlight in the whole deck.\n\n"
         "The cta slide: field 'line' (a calm closing question or statement, <=60 chars). Do not add a button field. "
-        "The renderer already prints 'wearezylo.com' and 'contact@wearezylo.com' beneath the button — "
-        "never repeat a URL or email address in 'line', and never invent a different one.\n\n"
+        "The cta slide shows only the line and the button — no URL or email is rendered, and the "
+        "caption carries the link instead. Never put a URL or an email address in 'line'.\n\n"
         "Caption: 1 hook line, blank line, 2-3 short lines expanding the promise, blank line, "
         "one CTA line ending with 'wearezylo.com'. No emojis in the caption either.\n"
         "Hashtags: 5-10 strings, no '#' prefix, mixing niche and reach (e.g. AIConsulting, EnterpriseAI).\n\n"

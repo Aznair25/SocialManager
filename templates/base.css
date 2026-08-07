@@ -72,20 +72,6 @@ html, body {
   mask: var(--logo) no-repeat left center / contain;
 }
 
-.tag-chip {
-  display: inline-flex;
-  align-items: center;
-  border: 1.5px solid var(--chip-border);
-  background: var(--chip-bg);
-  border-radius: var(--r-pill);
-  padding: 12px 28px;
-  font-size: 28px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.tag-chip:empty { display: none; }
 
 /* ---------- body ---------- */
 /* Slide content is centred on both axes — the deck reads as a sequence of
@@ -269,18 +255,6 @@ html, body {
   background: var(--pill-fg);
   color: var(--pill-bg);
   font-size: 28px;
-}
-.cta-site {
-  font-size: 32px;
-  font-weight: 500;
-  color: var(--muted);
-  margin-top: 36px;
-}
-.cta-email {
-  font-size: 32px;
-  font-weight: 400;
-  color: var(--soft);
-  margin-top: 12px;
 }
 
 /* highlight span (**word** in copy) */

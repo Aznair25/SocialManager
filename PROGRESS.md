@@ -56,6 +56,25 @@
 
 ## Log
 
+### 2026-08-07 — Session 3g: owner design corrections
+**Done:** Three corrections from owner screenshots in `changes/`.
+1. **Header tag chip removed** (`ENTERPRISE 2026` pill) — called out as irrelevant noise. Dropped
+   from all five templates plus its CSS. The cover's `kicker` field no longer renders, so the
+   archetype guides now say "cover (hook only)" and stop the model writing copy nothing displays.
+   In-body chips stay: `kicker` on content slides, `MYTH`/`FACT` on mythfact.
+2. **Cover arrow reshaped to a looping arrow.** Owner compared the plain arc against the reference
+   and the difference was the loop — the stroke must cross itself once before the sweep down, which
+   is what makes it read as hand-drawn. Drafted three candidates and rendered them side by side
+   before picking rather than guessing.
+3. **`wearezylo.com` and `contact@wearezylo.com` removed from the cta slide.** It now shows only the
+   line and the `Book a call` pill. This reverses the 2026-08-07 addition — the owner has now seen it
+   rendered and wants the slide cleaner. `identity.site` / `identity.email` stay in `tokens.json`,
+   and the caption still carries the link, so nothing is lost. Generator prompt updated to match.
+Dead CSS removed (`.tag-chip`, `.cta-site`, `.cta-email`). All 13 decks re-rendered: 108 slides,
+all 1080×1350.
+**Next:** Owner review of the cleaned cover and cta.
+**Blockers:** None.
+
 ### 2026-08-07 — Session 3f: visual elements from owner references
 **Done:** Owner supplied six Instagram screenshots in `visual_elements/` showing what "add visual
 elements, not just text" meant. Three separate asks, all implemented:

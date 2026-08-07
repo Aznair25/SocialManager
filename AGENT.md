@@ -39,7 +39,7 @@ Generate **knowledge decks** — multi-slide Instagram carousels — for **Zylo*
 | `radius.card` | `20px` | cards (site: 0.625rem scaled ×2 for 1080px canvas) |
 | `radius.pill` | `999px` | buttons, chips |
 | Font | **Poppins** | 300 display numerals · 500/600 headings · 400 body |
-| `identity.email` | `contact@wearezylo.com` | contact route, printed on every cta slide |
+| `identity.email` | `contact@wearezylo.com` | contact route; **not rendered on slides** since 2026-08-07, kept for captions/future use |
 | `identity.logo` | `brand/logo-zylo.png` | the ZYLO logotype, top-left of every slide |
 
 **Logo (owner asset, 2026-08-07).** `brand/logo-source.png` is the original supplied artwork —
@@ -50,9 +50,9 @@ light ones and **no colour is baked into the asset** — rule 6 (never introduce
 holds, and the blue never reaches a slide. If the logo is ever reissued, re-derive the mask from
 the new source; do not paste a coloured logo into a template.
 
-Design language: generous negative space, giant light-weight numerals with small labels, white pill buttons with arrow chips, small tag chips (`AI`, `Enterprise`, `Automation`), the logotype small at top-left of each slide, handle `@wearezylotech` in the footer. Dark slides may use a very subtle purple radial glow — never gradients that overpower text.
+Design language: generous negative space, giant light-weight numerals with small labels, white pill buttons with arrow chips, the logotype alone at top-left of each slide, handle `@wearezylotech` in the footer. **No header tag chip** — the `ENTERPRISE 2026`-style pill was removed 2026-08-07 as noise; the only chips left are the in-body `kicker` on content slides and `MYTH`/`FACT` on mythfact. Dark slides may use a very subtle purple radial glow — never gradients that overpower text.
 
-**Slide content is horizontally centred** (owner decision, 2026-08-07). Body copy, chips, numerals, dividers and CTA blocks all centre left-to-right; only the header (logotype / tag chip) and footer (handle / index) stay edge-aligned. A deck reads as a sequence of single focused statements, not as left-aligned page copy.
+**Slide content is horizontally centred** (owner decision, 2026-08-07). Body copy, chips, numerals, dividers and CTA blocks all centre left-to-right; only the header (logotype) and footer (handle / index) stay edge-aligned. A deck reads as a sequence of single focused statements, not as left-aligned page copy.
 
 **Every slide carries a background arc motif** (owner reference, 2026-08-07): three oversized thin circles (`.arcs > i`) bleeding off the edges at `--arc` opacity — `rgba(255,255,255,0.055)` on dark, `rgba(10,10,10,0.045)` on light. It is a watermark, not a graphic: if you can read it as circles at full size it is too strong. Same three positions on every slide so the deck reads as one template. Drawn with CSS borders rather than an image, so the colour stays a token and nothing is fetched at render time.
 
@@ -151,7 +151,7 @@ Most viewers read slide 1 and nothing else, so it is written and designed differ
 - **Fewest words in the deck.** 3–8 words, aim under 45 characters; **55 is a hard validator failure** (was 70 until 2026-08-07). Fewer words, larger type.
 - **A hook, never a label.** It must never restate the topic, the deck's subject, or a source article's headline — that is the single most common failure. `Agentic AI: orchestrating operations` is a title; `Your AI pilot is a cul-de-sac` is a hook.
 - It must land one of: a claim the reader will argue with, the expensive mistake they are probably making, a number that stops them, or a tension between what they believe and what is true. Banned openings are listed in `ENGAGEMENT` in `src/generate.py`.
-- **A visual element, not just type.** The cover carries a hand-drawn-style **curved arrow** in `--hl`, anchored to the top-right of the body and pointing in at the hook (owner reference, 2026-08-07). Inline SVG using `currentColor`, so it stays token-driven. Anchor it to the top of `.body`, never the centre — the hook is 2–3 lines depending on copy, and centre-anchoring makes it collide. The arrowhead wings must splay ±28° about the curve's exit tangent; collinear wings read as a kink, not an arrow.
+- **A visual element, not just type.** The cover carries a hand-drawn-style **looping arrow** in `--hl`, anchored to the top-right of the body and pointing in at the hook (owner reference, 2026-08-07). The stroke must **cross itself once** before the sweep down — a plain arc was rejected; the loop is what makes it read as drawn. Inline SVG using `currentColor`, so it stays token-driven. Anchor it to the top of `.body`, never the centre — the hook is 2–3 lines depending on copy, and centre-anchoring makes it collide. The arrowhead wings must splay ±28° about the curve's exit tangent; collinear wings read as a kink, not an arrow.
 - **The swipe cue is small and in the corner** — `swipe to read →` in the footer, letterspaced and muted, replacing the slide index on the cover only. Not a centred graphic.
 
 Content slides are reframed for a scrolling reader too: titles are claims rather than labels, bodies address the reader as "you", name the cost of getting it wrong, and end somewhere that earns the next swipe. This is enforced by the `ENGAGEMENT` block in the system prompt — edit it there, not per-deck.
@@ -173,7 +173,7 @@ Note: those are **Claude** skills, but deck copy is written by gpt-5.1 inside `g
 
 ## Archetype rules
 
-Every archetype: slide 1 is always a **cover**, last slide is always **cta**. The cta is code-owned apart from its `line` (≤ 60 chars): the renderer prints the `Book a call` pill, then `wearezylo.com`, then `contact@wearezylo.com`, from `brand/tokens.json`. The LLM never writes a URL or email — the generator prompt forbids it, so the contact route can be changed in one place. Slide numbers `01/07` bottom-right.
+Every archetype: slide 1 is always a **cover**, last slide is always **cta**. The cta renders only the `line` (≤ 60 chars) and the `Book a call` pill. The `wearezylo.com` and `contact@wearezylo.com` lines were removed 2026-08-07 — the caption carries the link instead. `identity.site` / `identity.email` stay in `brand/tokens.json` for future use. The LLM must never write a URL or email in `line`; the generator prompt forbids it. Slide numbers `01/07` bottom-right.
 
 ## Captions
 

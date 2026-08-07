@@ -2,20 +2,20 @@
   <div class="arcs" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="head">
     <div class="wordmark" role="img" aria-label="{{wordmark}}"></div>
-    <div class="tag-chip">{{kicker}}</div>
   </div>
   <div class="body cover">
     <h1 class="hook">{{hook}}</h1>
     <!-- Curved arrow pointing in at the hook — the cover carries the fewest words
          in the deck, so a drawn element does work the copy would otherwise have to. -->
     <div class="cover-arrow" aria-hidden="true">
-      <svg width="170" height="212" viewBox="0 0 160 200" fill="none"
+      <svg width="185" height="226" viewBox="0 0 180 220" fill="none"
            stroke="currentColor" stroke-width="5"
            stroke-linecap="round" stroke-linejoin="round">
-        <path d="M138 12 C 160 78, 128 146, 62 172" />
-        <!-- Wings splayed +/-28deg about the curve's exit tangent (-66, 26),
-             otherwise they sit collinear with the curve and read as a kink. -->
-        <path d="M96 176 L 62 172 L 84 146" />
+        <!-- Looping hand-drawn arrow: the stroke crosses itself once before the
+             sweep down, which is what makes it read as drawn rather than as a plain arc. -->
+        <path d="M60 10 C130 40, 130 100, 70 100 C30 100, 30 50, 75 55 C125 62, 152 130, 95 200" />
+        <!-- Wings splayed +/-28deg about the exit tangent; collinear wings read as a kink. -->
+        <path d="M126 187 L95 200 L102 167" />
       </svg>
     </div>
   </div>
