@@ -1,0 +1,85 @@
+{
+  "id": "2026-08-07_fw-problemproof",
+  "archetype": "stat",
+  "palette": "dark",
+  "topic": "What Zylo's AI work actually delivers",
+  "pillar": "",
+  "cta_target": "wearezylo.com",
+  "slides": [
+    {
+      "role": "cover",
+      "hook": "Your AI pilot is the sideshow",
+      "kicker": "Not the main event"
+    },
+    {
+      "role": "content",
+      "kicker": "",
+      "title": "Activity everywhere, impact nowhere",
+      "body": "You have proofs of concept, licences, and a few keen teams. But no line leader can say: this workflow is faster, this cost is down, this risk is lower—because AI is still a sideshow."
+    },
+    {
+      "role": "content",
+      "kicker": "",
+      "title": "We start in real workflows",
+      "body": "Zylo builds with the teams who own the process: claims, underwriting, ops, finance. We map the actual tasks, redesign handoffs, then drop AI into the gaps—never the other way round."
+    },
+    {
+      "role": "stat",
+      "value": "+85%",
+      "label": "Operational efficiency where AI lands",
+      "context": "Cycle times fall, throughput rises and busywork disappears because the work is redesigned.",
+      "kicker": ""
+    },
+    {
+      "role": "content",
+      "kicker": "",
+      "title": "Capability that stays when we leave",
+      "body": "We train your product, ops and risk leads as the AI owners. Playbooks, patterns, and skills move in-house, so your next ten automations don’t need ten new consultancies."
+    },
+    {
+      "role": "stat",
+      "value": "3×",
+      "label": "Faster from idea to deployment",
+      "context": "Your teams learn to scope, test and ship AI changes, moving to continuous delivery.",
+      "kicker": ""
+    },
+    {
+      "role": "content",
+      "kicker": "",
+      "title": "Governance baked in, not bolted on",
+      "body": "Risk, compliance and legal sit in the room from day one. We codify policies into prompts, guardrails and monitoring—so scaling AI doesn’t mean scaling exposure."
+    },
+    {
+      "role": "stat",
+      "value": "−40%",
+      "label": "Manual processes in regulated teams",
+      "context": "Checks, summaries and routing steps become policy-aware automations with audit trails.",
+      "kicker": ""
+    },
+    {
+      "role": "stat",
+      "value": "50+",
+      "label": "Enterprises we’ve built with",
+      "context": "Since 2021, Zylo’s 35+ engineers have turned AI from experiments into infrastructure.",
+      "kicker": ""
+    },
+    {
+      "role": "cta",
+      "line": "Ready for AI to move from pilot to P&L?"
+    }
+  ],
+  "caption": "AI that moves your P&L, not just your slideware.\n\nZylo works inside real teams and workflows, so AI shows up as shorter cycle times, lower manual load and clearer risk controls.\nWe leave you with trained people, working systems and governance that can scale, not a deck and a prototype.\n\nSee what this could look like in your organisation at wearezylo.com",
+  "hashtags": [
+    "EnterpriseAI",
+    "AIConsulting",
+    "DigitalTransformation",
+    "AIAdoption",
+    "AIGovernance",
+    "OperationalExcellence",
+    "AutomationStrategy",
+    "ChiefTransformationOfficer",
+    "CIO",
+    "FutureOfWork"
+  ],
+  "framework": "problemproof"
+}

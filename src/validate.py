@@ -20,6 +20,11 @@ LIMITS = {
 MIDDLE_ROLES = {"stat": ["stat", "content"], "insight": ["content"], "mythfact": ["mythfact", "content"]}
 EMOJI_RE = re.compile("[\U0001F000-\U0001FAFF☀-➿️]")
 ID_RE = re.compile(r"^\d{4}-\d{2}-\d{2}_[a-z0-9-]+$")
+# A hook that OPENS with a small number is a counted promise ("5 signs ..."), and the
+# deck must deliver exactly that many. Guard against 3x / 40% / 2026, which are figures,
+# not counts.
+COUNT_PROMISE_RE = re.compile(r"^\s*(\d{1,2})(?![%×xX\d])\s+\S")
+SENTENCE_END_RE = re.compile(r"[.!?](?=\s|$)")
 
 
 def _strip(s):
@@ -78,6 +83,40 @@ def validate_deck(deck):
                 err(f"slide {i} ({role}).{f}: exclamation marks are forbidden on slides")
         if role == "stat" and len(_strip(s.get("value", ""))) > 6:
             warn(f'slide {i}: stat value "{s.get("value")}" >6 chars renders smaller')
+
+    # Reusing one of Zylo's figures for a second, different claim is how invented statistics
+    # get in ("+85% operational efficiency" quietly becomes "85% of AI pilots stall").
+    seen_values = {}
+    for i, s in enumerate(slides, start=1):
+        if s.get("role") != "stat" or not s.get("value"):
+            continue
+        core = re.sub(r"[^0-9]", "", _strip(s["value"]))
+        if not core:
+            continue
+        if core in seen_values:
+            j, prev = seen_values[core]
+            err(f'slides {j} and {i} both use the figure "{core}" for different claims '
+                f'("{prev}" vs "{_strip(s.get("label", ""))}") — a figure belongs to one claim. '
+                f"Drop the invented one; never reuse a real number for a second statistic")
+        else:
+            seen_values[core] = (i, _strip(s.get("label", "")))
+
+    # A count on the cover is a promise the reader can check — deliver it exactly, no padding.
+    if slides and slides[0].get("role") == "cover":
+        m = COUNT_PROMISE_RE.match(_strip(slides[0].get("hook", "")))
+        if m:
+            promised, delivered = int(m.group(1)), max(0, len(slides) - 2)
+            if 1 < promised <= 20 and promised != delivered:
+                err(f'cover promises {promised} but the deck delivers {delivered} — '
+                    f"make the counts match exactly (add or cut slides, or change the number)")
+
+    # One ask on the cta, not three. A setup plus an ask ("Two of these true? Let's talk.")
+    # is one ask and stays legal; three clauses is a stacked cta.
+    if slides and slides[-1].get("role") == "cta":
+        line = _strip(slides[-1].get("line", "")).strip()
+        if len(SENTENCE_END_RE.findall(line)) > 2:
+            err(f'slide {len(slides)} (cta).line stacks multiple asks — a cta makes ONE ask '
+                f"(a single setup clause before it is fine)")
 
     if not str(deck.get("caption") or "").strip():
         err("caption is required")

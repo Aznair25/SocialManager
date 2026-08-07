@@ -161,6 +161,18 @@
       </div>
     </div>
     <div class="field">
+      <label for="framework">Story shape</label>
+      <select id="framework">
+        <option value="auto">Auto — pick whatever fits the material</option>
+        <option value="hacklist">Hack list — named techniques, one per slide</option>
+        <option value="valuestack">Value stack — an exact count, delivered exactly</option>
+        <option value="problemproof">Problem &amp; proof — a claim, then the receipt</option>
+        <option value="callout">Callout — challenge a common practice</option>
+      </select>
+      <p class="hint">How the deck argues, separate from how it looks. Leave on Auto unless
+         you want a specific shape.</p>
+    </div>
+    <div class="field">
       <label for="notes">Extra direction <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
       <textarea id="notes" placeholder="Angle it at CFOs. Mention onboarding time."></textarea>
     </div>
@@ -305,6 +317,7 @@ $('#go').onclick = async () => {
       body: JSON.stringify({ topic: topic || null,
                              archetype: $('#archetype').value,
                              palette: $('#palette').value,
+                             framework: $('#framework').value,
                              notes: $('#notes').value.trim() || null,
                              source_url: mode === 'url' ? url : null,
                              source_text: mode === 'text' ? text : null })

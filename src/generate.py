@@ -22,6 +22,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from frameworks import HOOKS, PSYCHOLOGY, choices, framework_block  # noqa: E402
 from validate import LIMITS, validate_deck  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -31,8 +32,12 @@ ARCHETYPE_GUIDE = {
     "stat": (
         "Slides: 1 cover (hook + optional kicker), then 3-6 'stat' slides "
         "(value like '+85%', '3×', '−40%', '50+'; label; optional context sentence), then 1 cta. "
-        "Prefer Zylo's real figures where relevant: +85% operational efficiency, 3× faster deployment, "
-        "−40% manual processes, 50+ companies, 35+ engineers, founded 2021. Never invent client names."
+        "Zylo's real figures — this is the COMPLETE list, and each belongs to ONE claim: "
+        "+85% operational efficiency, 3× faster deployment, −40% manual processes, 50+ companies, "
+        "35+ engineers, founded 2021. Never invent a statistic, never invent client names, and never "
+        "reuse one of these numbers for a different claim (writing '85% of AI pilots stall' because "
+        "85 appears above is fabrication and will be rejected). If you have fewer real numbers than "
+        "slides, make the deck shorter rather than inventing one."
     ),
     "insight": (
         "Slides: 1 cover (hook + optional kicker), then 4-7 'content' slides "
@@ -67,7 +72,8 @@ ENGAGEMENT = (
     "- Be concrete: the actual workflow, the actual role, the actual failure. No abstractions "
     "that could apply to any company.\n"
     "- Each body ends somewhere the reader wants the next slide. Do not close the loop early.\n"
-    "- Vary the rhythm across slides — do not write eight sentences with the same shape."
+    "- Vary the rhythm across slides — do not write eight sentences with the same shape.\n\n"
+    + HOOKS + "\n\n" + PSYCHOLOGY
 )
 
 VOICE = (
@@ -126,12 +132,13 @@ def source_block(source):
     return f"{SOURCE_RULES}\n\n{head}<<<SOURCE\n{body}\nSOURCE>>>"
 
 
-def system_prompt(archetype):
+def system_prompt(archetype, framework="auto"):
     return (
         ZYLO + "\n\n"
         + ENGAGEMENT + "\n\n"
         + VOICE + "\n\n"
-        "Archetype '" + archetype + "': " + ARCHETYPE_GUIDE[archetype] + "\n\n"
+        "Archetype '" + archetype + "' decides how slides LOOK: " + ARCHETYPE_GUIDE[archetype] + "\n\n"
+        "The framework decides how the deck ARGUES.\n" + framework_block(framework, archetype) + "\n\n"
         "HARD character limits per field (counted after removing ** markers) — exceeding any limit is a failure:\n"
         + json.dumps({r: s["fields"] for r, s in LIMITS.items()}, indent=2) + "\n"
         "These are CHARACTERS, not words — letters, spaces and punctuation all count. Models "
@@ -228,7 +235,7 @@ class GenerationError(RuntimeError):
 
 
 def generate(topic, archetype, palette, slug=None, pillar=None, notes=None, max_attempts=3,
-             on_event=None, source=None):
+             on_event=None, source=None, framework="auto"):
     """Return a validated deck dict. on_event(str) receives progress lines (defaults to print).
 
     source: optional {url, title, text} from extract.py (or pasted text). Used as
@@ -262,7 +269,7 @@ def generate(topic, archetype, palette, slug=None, pillar=None, notes=None, max_
         user_msg += f"\nDirection notes: {notes}"
     if src_text:
         user_msg += "\n\n" + source_block(source)
-    messages = [{"role": "system", "content": system_prompt(archetype)},
+    messages = [{"role": "system", "content": system_prompt(archetype, framework)},
                 {"role": "user", "content": user_msg}]
 
     for attempt in range(1, max_attempts + 1):
@@ -286,6 +293,8 @@ def generate(topic, archetype, palette, slug=None, pillar=None, notes=None, max_
             "caption": partial.get("caption", ""),
             "hashtags": partial.get("hashtags", []),
         }
+        if framework and framework != "auto":
+            deck["framework"] = framework
         if source and source.get("url"):
             deck["source_url"] = source["url"]   # provenance only; never rendered on a slide
 
@@ -335,6 +344,8 @@ def main():
     ap.add_argument("--slug", help="override the auto slug")
     ap.add_argument("--pillar", help="content pillar tag (reserved for sourcing)")
     ap.add_argument("--notes", help="extra direction for the model")
+    ap.add_argument("--framework", default="auto", choices=choices(),
+                    help="narrative architecture; 'auto' lets the model pick one that fits")
     ap.add_argument("--url", help="blog or LinkedIn post URL to draw the points from")
     ap.add_argument("--source-file", help="text file to draw the points from (use when a site blocks the fetch)")
     ap.add_argument("--render", action="store_true", help="render immediately after generating")
@@ -358,7 +369,7 @@ def main():
 
     try:
         deck = generate(args.topic, args.archetype, args.palette, args.slug, args.pillar,
-                        args.notes, source=source)
+                        args.notes, source=source, framework=args.framework)
     except GenerationError as e:
         sys.exit(f"✗ {e}")
 

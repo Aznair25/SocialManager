@@ -12,6 +12,8 @@ Generate **knowledge decks** — multi-slide Instagram carousels — for **Zylo*
 
 1. **Never use AI image generation to draw slides or any text.** All slides are rendered deterministically from HTML/CSS templates via headless Chromium. (AI-generated *background art* may be introduced later only with explicit owner approval, always with text composited by the renderer.)
 2. **Only brand tokens.** Every color, font, radius, and spacing value comes from `brand/tokens.json`. Never hard-code a hex value inside a template; reference the CSS variables generated from tokens.
+3a. **Numbers are load-bearing.** Zylo's real figures are exactly: `+85%` operational efficiency, `3×` faster deployment, `−40%` manual processes, `50+` companies, `35+` engineers, founded `2021`. Each belongs to one claim. The validator rejects the same figure appearing on two stat slides with different labels — that is how a real number gets quietly reattached to an invented statistic (observed 2026-08-07: `+85% operational efficiency` became a fabricated `85% of AI pilots stall`). If there are fewer real numbers than slides, make the deck shorter.
+
 3. **Every deck must pass `python src/validate.py` before rendering.** Char limits and slide-count rules in `schema/deck.schema.json` are hard constraints, not suggestions. If copy doesn't fit, rewrite the copy — never shrink the type or widen the box.
 4. **Format:** 1080×1350 px (4:5), PNG. 6–10 slides recommended, 20 max (Instagram cap). All slides in a deck share the same palette variant.
 5. **Every deck gets a contact sheet** (`contact-sheet.png`) for human approval. Nothing is "done" without one. Never post/publish anywhere — a human uploads manually for now.
@@ -150,6 +152,21 @@ Most viewers read slide 1 and nothing else, so it is written and designed differ
 - **A visual element, not just type.** The cover carries a large circled arrow in `--hl` plus a small `swipe` label, centred under the hook. This replaced the old footer swipe pill. The arrow is inline SVG using `currentColor`, so it stays token-driven.
 
 Content slides are reframed for a scrolling reader too: titles are claims rather than labels, bodies address the reader as "you", name the cost of getting it wrong, and end somewhere that earns the next swipe. This is enforced by the `ENGAGEMENT` block in the system prompt — edit it there, not per-deck.
+
+## Frameworks — how a deck argues
+
+`archetype` decides how slides **look**; `framework` (in `src/frameworks.py`) decides how the deck **argues**. They are orthogonal — a stat deck can be a Problem-Proof or a Value-Stack. Pass `--framework`, or leave it on `auto` and the model picks a fitting one.
+
+| Framework | Suits | The reason to keep swiping |
+|---|---|---|
+| `problemproof` | stat, insight | Cover makes a claim, last content slide is the receipt. The open loop is the engine |
+| `hacklist` | insight, stat | One **named** technique per slide — naming is mandatory, named things get repeated |
+| `valuestack` | insight, stat | An exact count on the cover, paid down slide by slide, no padding |
+| `callout` | mythfact, insight | Challenges a common practice, with a **fairness pivot** slide ("the problem isn't X, it's Y") |
+
+Adapted from `skills/social/references/carousel-frameworks.md` in [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills). The structures were kept; the consumer/growth tone was not — that repo's "unpopular opinion" and personal-anecdote hooks violate rule 7, so the register was re-pitched for a firm writing to an executive buyer. Demo Walkthrough was dropped: it needs real UI screenshots, which this pipeline does not produce.
+
+Note: those are **Claude** skills, but deck copy is written by gpt-5.1 inside `generate.py` at runtime with no Claude in the loop. Material like this only changes output if it is ported into the system prompt — installing it under `.claude/skills/` would only help an agent editing this repo.
 
 ## Archetype rules
 

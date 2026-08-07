@@ -48,7 +48,42 @@
 - The cover is a hook, not a title: ≤55 chars hard, 3-8 words, plus a circled-arrow visual. Never
   restates the topic or a source headline (owner decision, 2026-08-07).
 
+- Content craft is ported from marketing frameworks into the **generator's system prompt**, not into
+  `.claude/skills/` — copy is written by gpt-5.1 at runtime with no Claude in the loop, so a Claude
+  skill would not change a single deck (2026-08-07).
+- Zylo's six real figures each belong to one claim; the validator rejects a figure reused for a
+  second claim (2026-08-07).
+
 ## Log
+
+### 2026-08-07 — Session 3e: marketing frameworks ported into the generator
+**Done:** Owner linked the `marketing-plan` skill from coreyhaines31/marketingskills. That one is
+about 12-month AARRR plans and is not applicable; the useful material was
+`skills/social/references/carousel-frameworks.md`, the social hook formulas and marketing-psychology.
+Ported four of the five narrative frameworks into new `src/frameworks.py` — `problemproof`,
+`hacklist`, `valuestack`, `callout` — as a `framework` axis orthogonal to `archetype` (archetype =
+how slides look, framework = how the deck argues). Demo Walkthrough dropped (needs UI screenshots).
+Consumer/growth tone stripped throughout to respect rule 7. Wired through `--framework`, the API,
+and a "Story shape" selector in the UI; `auto` lets the model choose. Also folded named hook
+patterns and open-loop / loss-aversion / curse-of-knowledge guidance into `ENGAGEMENT`.
+Two production-checklist items are now mechanical validator rules feeding the correction loop:
+the **counted promise** (a cover opening with a number must deliver exactly that many middle slides;
+regex guards against `3×`, `40%`, `2026` being read as counts) and **one ask per cta**.
+Raised chip and footer type to the skill's ~28px thumbnail-legibility floor (`.kicker`, `.tag-chip`,
+`.mf-chip`, `.cover-swipe` 22→28, `.foot` 26→28).
+**Caught a real content-integrity bug by testing rather than re-rendering:** the first Problem-Proof
+deck fabricated `85% of AI pilots stall at 'interesting'`, reusing Zylo's genuine `+85% operational
+efficiency` for an invented claim. Added a validator rule rejecting the same figure on two stat
+slides with different labels, plus an explicit "this is the COMPLETE list of real figures, each
+belongs to one claim" prompt rule. On regeneration the deck dropped the invented stat and shipped
+four stat slides instead of padding to seven — the intended behaviour.
+Also fixed a false positive in the first cut of the one-ask cta rule: it counted sentences, which
+flagged the legitimate `"Two of these true? Let's talk."` (a setup plus one ask). Now allows two
+clauses, rejects three.
+**Next:** Owner review of the three framework sample decks (`fw-valuestack`, `fw-callout`,
+`fw-problemproof`) to decide which shapes earn a place in the rotation. Older decks still carry
+pre-framework copy and would need regenerating to benefit.
+**Blockers:** None.
 
 ### 2026-08-07 — Session 3d: engagement pass (cover hooks, centring, visual)
 **Done:** Four owner-reported issues, all fixed and re-rendered across every deck.

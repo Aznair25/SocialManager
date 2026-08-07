@@ -23,6 +23,7 @@ from pydantic import BaseModel, Field
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from extract import ExtractError, extract_from_url  # noqa: E402
+from frameworks import choices as framework_choices  # noqa: E402
 from generate import ARCHETYPE_GUIDE, GenerationError, generate, load_env  # noqa: E402
 from render import RenderError, render_deck  # noqa: E402
 from validate import validate_deck  # noqa: E402
@@ -50,6 +51,7 @@ class DeckRequest(BaseModel):
     slug: str | None = None
     pillar: str | None = None
     # Optional reference material: a URL to read, or text pasted in when a site blocks the fetch.
+    framework: str = "auto"
     source_url: str | None = Field(default=None, max_length=2000)
     source_text: str | None = Field(default=None, max_length=40000)
 
@@ -95,7 +97,7 @@ def run_pipeline(job_id, req: DeckRequest):
             deck = generate(
                 req.topic, req.archetype, req.palette,
                 slug=req.slug, pillar=req.pillar, notes=req.notes,
-                on_event=lambda m: _log(job_id, m), source=source,
+                on_event=lambda m: _log(job_id, m), source=source, framework=req.framework,
             )
 
             _set(job_id, stage="validating", deck_id=deck["id"])
@@ -132,6 +134,8 @@ def create_deck(req: DeckRequest):
         raise HTTPException(400, f"archetype must be one of {sorted(ARCHETYPE_GUIDE)}")
     if req.palette not in ("dark", "light"):
         raise HTTPException(400, "palette must be 'dark' or 'light'")
+    if req.framework not in framework_choices():
+        raise HTTPException(400, f"framework must be one of {framework_choices()}")
     has_source = bool((req.source_url or "").strip() or (req.source_text or "").strip())
     if not has_source and len((req.topic or "").strip()) < 3:
         raise HTTPException(400, "give a topic, or a source_url / source_text to draw one from")
@@ -255,6 +259,7 @@ def config():
     import os
     return {"archetypes": sorted(ARCHETYPE_GUIDE),
             "palettes": ["dark", "light"],
+            "frameworks": framework_choices(),
             "model": os.environ.get("ZYLO_MODEL", "gpt-5.1"),
             "api_key_set": bool(os.environ.get("OPENAI_API_KEY"))}
 
