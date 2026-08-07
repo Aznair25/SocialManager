@@ -1,0 +1,263 @@
+/* Zylo deck design system — values arrive as CSS variables from brand/tokens.json (injected by src/render.py). */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 1080px;
+  height: 1350px;
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.slide {
+  position: relative;
+  width: 1080px;
+  height: 1350px;
+  padding: var(--pad);
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--fg);
+  overflow: hidden;
+}
+
+/* Subtle purple glow — dark palette only, never overpowering text */
+.slide.dark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1100px 900px at 88% -8%, var(--glow), transparent 62%),
+    radial-gradient(900px 700px at -12% 108%, var(--glow-2), transparent 60%);
+  pointer-events: none;
+}
+
+.head, .body, .foot { position: relative; z-index: 1; }
+
+/* ---------- header ---------- */
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  flex: none;
+}
+
+/* Real ZYLO logotype, drawn as a mask so the fill comes from --fg — white on
+   dark slides, near-black on light. No colour is baked into the asset. */
+.wordmark {
+  height: 46px;
+  aspect-ratio: 512 / 210;
+  background: var(--fg);
+  -webkit-mask: var(--logo) no-repeat left center / contain;
+  mask: var(--logo) no-repeat left center / contain;
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid var(--chip-border);
+  background: var(--chip-bg);
+  border-radius: var(--r-pill);
+  padding: 12px 28px;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.tag-chip:empty { display: none; }
+
+/* ---------- body ---------- */
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+}
+
+/* cover */
+.body.cover .hook {
+  font-size: 86px;
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+  max-width: 900px;
+}
+
+/* stat */
+.body.stat { gap: 8px; }
+.body.stat .value {
+  font-size: 250px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--numeral);
+  font-variant-numeric: tabular-nums;
+}
+.body.stat .value[data-len="7"],
+.body.stat .value[data-len="8"] { font-size: 190px; }
+.body.stat .label {
+  font-size: 44px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-top: 26px;
+  max-width: 860px;
+}
+.body.stat .context {
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--muted);
+  margin-top: 20px;
+  max-width: 800px;
+}
+.body.stat .context:empty { display: none; }
+
+/* content (insight / case) */
+.body.content { gap: 0; }
+.kicker {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  border: 1.5px solid var(--chip-border);
+  background: var(--chip-bg);
+  border-radius: var(--r-pill);
+  padding: 12px 28px;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 44px;
+}
+.kicker:empty { display: none; }
+.body.content .title {
+  font-size: 64px;
+  font-weight: 600;
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+  max-width: 880px;
+}
+.body.content .para {
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 1.62;
+  color: var(--soft);
+  margin-top: 36px;
+  max-width: 860px;
+}
+
+/* mythfact */
+.body.mythfact { gap: 0; justify-content: center; }
+.mf-chip {
+  display: inline-flex;
+  align-self: flex-start;
+  border: 1.5px solid var(--chip-border);
+  background: var(--chip-bg);
+  border-radius: var(--r-pill);
+  padding: 12px 30px;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.mf-chip.fact-chip {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #FFFFFF;
+}
+.mf-text {
+  font-size: 38px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--muted);
+  margin-top: 28px;
+  max-width: 860px;
+}
+.mf-text.fact-text {
+  font-size: 42px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--fg);
+}
+.mf-div {
+  width: 88px;
+  border-top: 2px solid var(--chip-border);
+  margin: 64px 0;
+}
+
+/* cta */
+.body.cta { align-items: flex-start; }
+.body.cta .cta-line {
+  font-size: 70px;
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  max-width: 880px;
+}
+.cta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--pill-bg);
+  color: var(--pill-fg);
+  border-radius: var(--r-pill);
+  padding: 30px 56px;
+  font-size: 36px;
+  font-weight: 600;
+  margin-top: 70px;
+}
+.cta-pill .arr-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--pill-fg);
+  color: var(--pill-bg);
+  font-size: 28px;
+}
+.cta-site {
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-top: 36px;
+}
+.cta-email {
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--soft);
+  margin-top: 12px;
+}
+
+/* highlight span (**word** in copy) */
+.hl { color: var(--hl); }
+
+/* ---------- footer ---------- */
+.foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+  flex: none;
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.index { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+.swipe-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--pill-bg);
+  color: var(--pill-fg);
+  border-radius: var(--r-pill);
+  padding: 16px 36px;
+  font-size: 26px;
+  font-weight: 500;
+}

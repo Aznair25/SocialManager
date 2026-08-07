@@ -1,0 +1,18 @@
+{
+  "id": "2026-08-06_enterprise-ai-myths",
+  "archetype": "mythfact",
+  "palette": "light",
+  "topic": "Common enterprise AI myths, corrected with delivery experience",
+  "pillar": "education",
+  "cta_target": "wearezylo.com",
+  "slides": [
+    { "role": "cover", "kicker": "reality check", "hook": "4 AI myths your board still believes" },
+    { "role": "mythfact", "myth": "AI replaces teams.", "fact": "AI removes repetitive load. Teams move to judgment, strategy and client work — output rises without cuts." },
+    { "role": "mythfact", "myth": "You need perfect data first.", "fact": "You need a starting point. Pilots surface data gaps faster than any audit — and fix them in weeks." },
+    { "role": "mythfact", "myth": "Enterprise AI takes years to pay off.", "fact": "Scoped automation shows measurable ROI within the first quarter. Start narrow, prove it, expand." },
+    { "role": "mythfact", "myth": "Custom AI is only for tech giants.", "fact": "Mid-market teams deploy custom agents in weeks now. The tooling matured — the advantage is in moving early." },
+    { "role": "cta", "line": "Which myth is running your roadmap?", "button": "Book a call" }
+  ],
+  "caption": "Four beliefs we hear in every first meeting — and what delivery across 50+ builds says instead.\n\nThe expensive one is the third: waiting for perfect data while competitors run pilots.\n\nReality check for your roadmap → wearezylo.com",
+  "hashtags": ["EnterpriseAI", "AIStrategy", "AIConsulting", "DigitalTransformation", "AIAutomation", "BusinessGrowth", "TechLeadership"]
+}

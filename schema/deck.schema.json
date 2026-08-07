@@ -1,0 +1,45 @@
+{
+  "$comment": "Contract for decks/*/deck.json. Enforced by src/validate.py (hand-rolled, no ajv dependency). Char limits are counted AFTER stripping **highlight** markers. Emojis and exclamation marks are forbidden in slide text (AGENT.md rule 7).",
+  "type": "object",
+  "required": ["id", "archetype", "palette", "slides", "caption", "hashtags"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}_[a-z0-9-]+$" },
+    "archetype": { "enum": ["stat", "insight", "mythfact"] },
+    "palette": { "enum": ["dark", "light"] },
+    "topic": { "type": "string", "$comment": "free text, for humans" },
+    "pillar": { "type": "string", "$comment": "reserved for future topic sourcing" },
+    "cta_target": { "type": "string", "$comment": "reserved for future publishing integration" },
+    "slides": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 20,
+      "$comment": "slides[0] must be role=cover, last must be role=cta. Middle roles allowed per archetype: stat->[stat,content], insight->[content], mythfact->[mythfact,content]. 6-10 slides recommended (validator warns outside).",
+      "items": {
+        "oneOf": [
+          {
+            "properties": { "role": { "const": "cover" }, "hook": { "maxLength": 70 }, "kicker": { "maxLength": 24 } },
+            "required": ["role", "hook"]
+          },
+          {
+            "properties": { "role": { "const": "stat" }, "value": { "maxLength": 8 }, "label": { "maxLength": 60 }, "context": { "maxLength": 110 }, "kicker": { "maxLength": 24 } },
+            "required": ["role", "value", "label"]
+          },
+          {
+            "properties": { "role": { "const": "content" }, "kicker": { "maxLength": 24 }, "title": { "maxLength": 44 }, "body": { "maxLength": 200 } },
+            "required": ["role", "title", "body"]
+          },
+          {
+            "properties": { "role": { "const": "mythfact" }, "myth": { "maxLength": 90 }, "fact": { "maxLength": 160 } },
+            "required": ["role", "myth", "fact"]
+          },
+          {
+            "properties": { "role": { "const": "cta" }, "line": { "maxLength": 60 }, "button": { "maxLength": 24, "$comment": "default: Book a call" } },
+            "required": ["role", "line"]
+          }
+        ]
+      }
+    },
+    "caption": { "type": "string", "maxLength": 2200 },
+    "hashtags": { "type": "array", "minItems": 5, "maxItems": 10, "items": { "type": "string" } }
+  }
+}

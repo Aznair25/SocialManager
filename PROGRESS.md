@@ -1,0 +1,93 @@
+# PROGRESS.md — Zylo Deck Agent
+
+> Update at the end of every working session (AGENT.md rule 8). Newest entry on top.
+
+## Status board
+
+| Area | State |
+|---|---|
+| Feasibility & brand research | ✅ Done (see FEASIBILITY.md) |
+| AGENT.md / PROGRESS.md | ✅ Done |
+| Brand kit (tokens.json, base.css) | ✅ Done |
+| Templates: cover/stat/content/mythfact/cta | ✅ Done — visually verified in browser |
+| Validator (`src/validate.py`) | ✅ Done — executed, all 3 decks pass with 0 errors |
+| Renderer + contact sheet (`src/render.py`) | ✅ Done — executed, 19 slides + 3 contact sheets rendered |
+| Sample decks ×3 (deck.json) | ✅ Done — validated and rendered |
+| First render run (PNG output) | ✅ Done — 2026-08-07, all slides 1080×1350, visually inspected |
+| Cleanup: delete deprecated `src/*.js`, `package.json` | ✅ Done |
+| LLM content generator (`src/generate.py`) | ✅ Ported to OpenAI (`gpt-5.1`) 
+| HTTP API (`src/app.py`) | ✅ Done — render path tested end to end |
+| Web UI (`web/index.html`) | ✅ Done — loads, lists decks, no console errors |
+| Real Zylo logo on slides | ✅ Done — owner supplied 2026-08-07, extracted to an alpha mask |
+| Vendored Poppins in `brand/fonts/` | 🔲 Optional — currently Google Fonts at render time |
+| IG publishing integration | ⏸ Deferred by design |
+| Topic sourcing | ⏸ Deferred by design |
+
+## Decisions locked
+
+- Architecture: LLM writes `deck.json` → deterministic HTML/CSS → Playwright/Chromium → 1080×1350 PNG. No AI-drawn slides.
+- Palette: dark-primary (`#07090F`) with light-card accent decks (`#FAFAFA`), ~2:1 rotation.
+- v1 archetypes: **stat**, **insight**, **mythfact** (definition/quote cards dropped from v1).
+- Review loop: contact sheet per deck, human approves before any upload; uploads manual for now.
+- LLM provider: **OpenAI**, default `gpt-5.1` (owner decision, 2026-08-07). Overridable via `ZYLO_MODEL`.
+- Interface: FastAPI serving a single-page UI (`web/index.html`) — no Node, no build step, so the
+  repo stays Python-only. CLI remains the reference path; the API calls the same functions.
+- Logo: owner's artwork is a blue-gradient tile; slides use an **alpha mask** of the logotype tinted
+  from `--fg`, never the coloured tile — rule 6 forbids introducing new colors (2026-08-07).
+- CTA contact route: `contact@wearezylo.com`, code-owned in `tokens.json`; the LLM is forbidden from
+  writing any URL or email (2026-08-07).
+
+## Log
+
+### 2026-08-07 — Session 3: first execution, OpenAI port, API + UI
+**Done:** Deleted deprecated `src/render.js`, `src/validate.js`, `package.json`. Installed deps and
+Chromium; **ran the pipeline for the first time**. All 3 sample decks validate with 0 errors and
+render clean: 19 slides total, every one 1080×1350, plus contact sheets and captions. Visually
+inspected all 3 contact sheets — no overflow or clipping, chips/pills correct, purple glow subtle,
+light myths deck legible, footers show handle + index.
+Fixed 1 real runtime bug: contact-sheet thumbnails were all broken images because `page.set_content()`
+gives the page an `about:blank` origin, from which Chromium refuses to load `file://` subresources —
+thumbnails now inline as base64 data URIs (`src/render.py`). No visual values, char limits, or slide
+copy were touched.
+Then, per owner request: ported `generate.py` from Anthropic to **OpenAI** (`gpt-5.1`, JSON-object
+response format, `max_completion_tokens`); refactored `generate()`/`render_deck()` to take an
+`on_event` callback and raise `GenerationError`/`RenderError` instead of `sys.exit`, so they are
+callable in-process; added `src/app.py` (FastAPI REST API: create/poll/list/fetch/re-render/download,
+jobs on worker threads because Playwright's sync API refuses to run inside an asyncio loop, one
+pipeline lock so Chromium is never driven concurrently) and `web/index.html` (brand-styled
+single-page studio: topic form, live stage progress, contact sheet, slide thumbnails, caption copy,
+zip download). Default port moved to **8777** — port 8000 is already taken by another app on this
+machine — with a bind pre-check so a clash fails with a readable message.
+**Next:** Owner to paste `OPENAI_API_KEY` into `.env`; then run the generation smoke test
+(`python src/generate.py "How AI agents cut enterprise support costs" --archetype insight --palette dark --render`)
+and one end-to-end run through the UI to confirm the validator self-correct loop passes within 3
+attempts on gpt-5.1. Then ask owner for the real Zylo logo SVG.
+**Blockers:** No OpenAI API key on the machine yet — the generation half of the pipeline is the one
+part still unexecuted. Render half is fully verified.
+
+### 2026-08-07 — Session 3b: real logo + CTA email
+**Done:** Owner supplied the brand logo (a blue-gradient app tile, opaque raster). Kept the original
+at `brand/logo-source.png` and derived `brand/logo-zylo.png` — the ZYLO logotype as a tight-cropped
+512×210 **alpha mask** (background keyed out on min-channel; the source separates cleanly, ground
+≤30 vs letterforms ≥240, so edges came out with no blue fringing). Templates now draw it via CSS
+`mask` with `background: var(--fg)`, so it is white on dark slides and near-black on light and the
+blue never reaches a slide — rule 6 (never introduce new colors) intact. The mask is injected as a
+data URI, same `about:blank` constraint as the contact-sheet thumbnails. Replaced the Poppins text
+wordmark in all 5 templates (`aria-label` retains the name).
+Added `identity.email = contact@wearezylo.com` to `tokens.json`; every cta slide now prints the
+button, then `wearezylo.com`, then the email. The generator prompt now forbids the model from
+writing any URL or email in the cta `line`, so the contact route stays code-owned and changeable in
+one place. No char limits, slide copy, or existing visual values were altered.
+Re-rendered all 3 decks: 19 slides, all 1080×1350, both palettes visually verified.
+**Next:** Unchanged — owner to add `OPENAI_API_KEY`, then the generation smoke test.
+**Blockers:** Same — no API key yet.
+
+### 2026-08-06 — Session 2: full build (Python backend)
+**Done:** Complete codebase: `brand/tokens.json`, `templates/base.css` + 5 slide templates, `schema/deck.schema.json`, `src/validate.py`, `src/render.py` (slides + contact sheet + caption), 3 sample decks (`ai-automation-numbers` stat/dark, `ready-for-ai-agents` insight/dark, `enterprise-ai-myths` mythfact/light). Backend ported Node→**Python** per owner request (JS files stubbed as deprecated, pending deletion). Design system **visually verified** by rendering the exact templates/CSS in Chrome: dark glow, lavender `**highlight**`, giant numerals, chips, pills, light variant all correct.
+**Next:** When sandbox VM is available: `pip install -r requirements.txt && playwright install chromium`, delete `src/*.js` + `package.json`, run `python src/render.py` on all 3 decks, inspect PNGs, present contact sheets for approval. Ask owner for the real Zylo logo SVG (slides currently use a text wordmark).
+**Blockers:** Sandbox VM offline for the entire session — code unexecuted. Fonts fall back to Google Fonts at render time until `brand/fonts/` is vendored.
+
+### 2026-08-06 — Session 1: research + foundations
+**Done:** Live review of wearezylo.com (extracted real CSS tokens: `#07090F`, `#6428A0`, `#CFD3FF`, Poppins, pill/chip language) and all 9 Instagram accounts (Zylo's IG is empty — blank slate). Confirmed IG carousel specs (4:5, 1080×1350, 20-slide cap) and Graph API prerequisites (deferred). Wrote FEASIBILITY.md, AGENT.md, PROGRESS.md.
+**Next:** Scaffold npm project, install Playwright + @fontsource/poppins, verify Chromium screenshot renders in sandbox, then brand kit → templates → renderer → sample decks.
+**Blockers:** Sandbox shell VM was offline earlier this session — pipeline validation pending VM availability.

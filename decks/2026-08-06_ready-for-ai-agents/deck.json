@@ -1,0 +1,19 @@
+{
+  "id": "2026-08-06_ready-for-ai-agents",
+  "archetype": "insight",
+  "palette": "dark",
+  "topic": "5 operational signals that a business is ready for AI agents",
+  "pillar": "education",
+  "cta_target": "wearezylo.com",
+  "slides": [
+    { "role": "cover", "kicker": "playbook", "hook": "5 signs your business is ready for **AI agents**" },
+    { "role": "content", "kicker": "sign 01", "title": "Your team repeats itself daily", "body": "If your people copy data between tools, answer the same questions, or file the same reports weekly — that is a workflow waiting to be automated." },
+    { "role": "content", "kicker": "sign 02", "title": "Decisions wait on data pulls", "body": "Reports take days because someone gathers, cleans and formats by hand. An agent does it continuously — leadership decides in real time." },
+    { "role": "content", "kicker": "sign 03", "title": "Support scales with headcount", "body": "If every new customer means another hire, margins shrink as you grow. Agents absorb volume without adding payroll." },
+    { "role": "content", "kicker": "sign 04", "title": "Your data lives in silos", "body": "CRM, finance, ops — all disconnected. Agents work across systems, so insight stops depending on who remembered to sync what." },
+    { "role": "content", "kicker": "sign 05", "title": "Growth is throttled by ops", "body": "Demand is not your bottleneck — capacity is. Automation turns operations from a constraint into a multiplier." },
+    { "role": "cta", "line": "Two of these true? Let's talk.", "button": "Book a call" }
+  ],
+  "caption": "Most teams adopt AI agents 18 months after they needed them.\n\nHere are the five operational signals that say the time is now — from data silos to support that only scales with headcount.\n\nSee how we deploy agents in weeks → wearezylo.com",
+  "hashtags": ["AIAgents", "AIConsulting", "AIAutomation", "EnterpriseAI", "DigitalTransformation", "FutureOfWork", "OperationalExcellence"]
+}
