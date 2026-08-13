@@ -65,17 +65,53 @@ brand/          tokens.json; logo-source.png (owner's original) + logo-zylo.png 
                 used by the templates); brand/fonts/ optional vendored Poppins woff2
 schema/         deck.schema.json — the contract every deck.json must satisfy
 templates/      base.css (design system) + one HTML template per slide role
-src/            generate.py (LLM content brain), validate.py, render.py (incl. contact sheet),
-                extract.py (URL -> reference text), app.py (FastAPI: REST API + serves the web UI)
+src/zylo/       the package (see layering below)
+src/*.py        generate.py, validate.py, render.py, extract.py, app.py — thin shims over
+                src/zylo/, kept so every documented command still works. frameworks.py
+                re-exports the old module functions.
+tests/          pytest suite; fakes.py stands in for OpenAI, Playwright and page fetching
+tools/          capture_baseline.py — dumps observable behaviour to JSON for before/after diffs
 web/            index.html — single-page studio UI (vanilla JS, no build step)
 decks/          output: decks/YYYY-MM-DD_slug/{deck.json, slides/*.png, contact-sheet.png, caption.txt}
 .env.example    copy to .env, add OPENAI_API_KEY (generation only; rendering needs no key)
 requirements.txt  playwright + openai + fastapi/uvicorn
+requirements-dev.txt  adds pytest + httpx
                 (setup: pip install -r requirements.txt && playwright install chromium)
 AGENT.md        this file
 PROGRESS.md     session log — always current
 FEASIBILITY.md  original assessment (context, do not edit)
 ```
+
+### Package layering (refactored 2026-08-12)
+
+Dependencies point inwards only. Nothing in `domain/` or `services/` imports openai,
+playwright or fastapi — which is what lets the whole pipeline run against fakes.
+
+```
+src/zylo/
+  domain/       Deck model, validation rules + per-field constraints, prompt-free. No I/O.
+  prompts/      Zylo's voice, archetype guides, framework catalog, PromptBuilder.
+  ports.py      Protocols: ChatClient, ScreenshotEngine, DeckRepository, SourceExtractor.
+  adapters/     OpenAI, Playwright (screenshots + page fetch), filesystem, extraction.
+  rendering/    deck -> HTML (theme, templates, slides, contact sheet). Pure.
+  services/     Use cases: generation, rendering, pipeline, jobs, naming, critique.
+  api/, cli/    Delivery. Thin — they translate requests into service calls.
+  container.py  Composition root: the ONLY place concrete adapters are named.
+```
+
+**Where to make a change**
+
+| Change | File |
+|---|---|
+| A new validation rule | `domain/validation/rules.py` — add a class, list it in `default_rules()` |
+| A character limit | `domain/validation/specs.py` |
+| Prompt wording / voice | `prompts/voice.py` |
+| A narrative framework | `prompts/frameworks.py` — add to `DEFAULT_FRAMEWORKS`; CLI and API pick it up automatically |
+| Slide HTML or CSS vars | `rendering/` |
+| Swap the model or browser | `container.py` only |
+
+Rule 3 still holds: **`domain/` must stay free of I/O**. If a rule needs a file or a
+network call, it is not a rule — it belongs in `services/`.
 
 Backend is **Python** (owner decision, 2026-08-06); the Node stubs were deleted 2026-08-07.
 LLM provider is **OpenAI** (owner decision, 2026-08-07), default model `gpt-5.1`, overridable
@@ -101,8 +137,13 @@ a human reviews the contact sheet and uploads manually.
 | `GET` | `/api/decks/{id}/slides/{n}.png`, `/contact-sheet.png`, `/caption.txt`, `/download` | artefacts |
 
 The CLI (`src/generate.py`, `src/validate.py`, `src/render.py`) still works unchanged and
-remains the reference path. Jobs are serialised behind one lock — one deck builds at a time,
-because Chromium and the deck directory are shared state.
+remains the reference path; `python -m zylo <command>` from `src/` is the same thing.
+Both the API and the CLI go through `services/pipeline.py`, so they cannot drift apart.
+Jobs are serialised behind one lock — one deck builds at a time, because Chromium and the
+deck directory are shared state.
+
+Run the tests with `python -m pytest` from the repo root (`pip install -r requirements-dev.txt`).
+They use fakes for OpenAI and Playwright, so they need no API key and no browser.
 
 ## Workflow (per deck)
 
